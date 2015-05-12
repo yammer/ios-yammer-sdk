@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary = 'YammerSDK'
   s.author = { 'Yammer' => 'ios@yammer-inc.com' }
   s.homepage = 'https://github.com/yammer/ios-yammer-sdk'
-  s.license = { :type => 'Apache', :file => 'LICENSE' }
+  s.license = { :type => 'MIT', :file => 'LICENSE' }
 
   s.source = { :git => 'https://github.com/yammer/ios-yammer-sdk.git', :tag => s.version.to_s }
   s.source_files = 'OAuthSDK/*.{h,m}'
