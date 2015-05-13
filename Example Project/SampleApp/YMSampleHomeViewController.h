@@ -6,9 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YMLoginController.h"
+#import "YMLoginClient.h"
 
-@interface YMSampleHomeViewController : UIViewController <YMLoginControllerDelegate>
+@interface YMSampleHomeViewController : UIViewController <YMLoginClientDelegate>
 
 @property (nonatomic) BOOL attemptingSampleAPICall;
 @property (weak, nonatomic) IBOutlet UITextView *resultsTextView;

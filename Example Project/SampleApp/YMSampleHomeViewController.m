@@ -6,8 +6,7 @@
 //
 
 #import "YMSampleHomeViewController.h"
-#import "YMConstants.h"
-#import "YMHTTPClient.h"
+#import "YMAPIClient.h"
 
 @implementation YMSampleHomeViewController
 
@@ -29,7 +28,16 @@
 // This is called by clicking the login button in the sample interface.
 - (IBAction)login:(id)sender
 {
-    [[YMLoginController sharedInstance] startLogin];
+    /* Add your client ID here */
+    [[YMLoginClient sharedInstance] setAppClientID:@"APP CLIENT ID"];
+    
+    /* Add your client secret here */
+    [[YMLoginClient sharedInstance] setAppClientSecret:@"APP CLIENT SECRET"];
+    
+    /* Add your authorization redirect URI here */
+    [[YMLoginClient sharedInstance] setAuthRedirectURI:@"AUTH REDIRECT URI"];
+    
+    [[YMLoginClient sharedInstance] startLogin];
 }
 
 - (void)viewDidLoad
@@ -41,7 +49,7 @@
 
 - (void)updateUI
 {
-    NSString *authToken = [[YMLoginController sharedInstance] storedAuthToken];
+    NSString *authToken = [[YMLoginClient sharedInstance] storedAuthToken];
     [self.tokenExists setText:(authToken ? @"Yes" : @"No")];
     [self.tokenExists setTextColor:(authToken ? [UIColor greenColor] : [UIColor redColor])];
 }
@@ -53,7 +61,7 @@
 // settings app, selecting Safari and then Clear Cookies and Data.
 - (IBAction)deleteToken:(id)sender
 {
-    [[YMLoginController sharedInstance] clearAuthToken];
+    [[YMLoginClient sharedInstance] clearAuthToken];
     [self updateUI];
 }
 
@@ -71,7 +79,7 @@
 - (IBAction)attemptYammerApiCall:(id)sender
 {
     // Get the authToken if it exists
-    NSString *authToken = [[YMLoginController sharedInstance] storedAuthToken];
+    NSString *authToken = [[YMLoginClient sharedInstance] storedAuthToken];
 
     // If the authToken exists, then attempt the sample API call.
     if (authToken) {
@@ -90,7 +98,7 @@
         // is called in this class.  Usually in an application that post-login process will just be an
         // app home page or something similar, so this dynamic delegate is not really necessary, but provides some
         // added flexibility in routing the app to a delegate after login.
-        [[YMLoginController sharedInstance] startLogin];
+        [[YMLoginClient sharedInstance] startLogin];
     }
 }
 
@@ -103,13 +111,10 @@
     // coming in fresh.
     self.resultsTextView.text = nil;
 
-    // The YMHTTPClient uses a "baseUrl" with paths appended.  The baseUrl looks like "https://www.yammer.com"
-    NSURL *baseURL = [NSURL URLWithString: YAMMER_BASE_URL];
-
     // Query params (in this case there are no params, but if there were, this is how you'd add them)
     NSDictionary *params = @{@"threaded": @"extended", @"limit": @30};
     
-    YMHTTPClient *client = [[YMHTTPClient alloc] initWithBaseURL:baseURL authToken:authToken];
+    YMAPIClient *client = [[YMAPIClient alloc] initWithAuthToken:authToken];
     
     __weak YMSampleHomeViewController* weakSelf = self;
     
@@ -143,13 +148,13 @@
 
 #pragma mark - Login controller delegate methods
 
-- (void)loginController:(YMLoginController *)loginController didCompleteWithAuthToken:(NSString *)authToken
+- (void)loginClient:(YMLoginClient *)loginClient didCompleteWithAuthToken:(NSString *)authToken
 {
     // Uncomment if you want to use delegate instead of notifications
     //[self handleSuccessWithToken:authToken];
 }
 
-- (void)loginController:(YMLoginController *)loginController didFailWithError:(NSError *)error
+- (void)loginClient:(YMLoginClient *)loginClient didFailWithError:(NSError *)error
 {
     // Uncomment if you want to use delegate instead of notifications
     //[self handleFailureWithError:error];
