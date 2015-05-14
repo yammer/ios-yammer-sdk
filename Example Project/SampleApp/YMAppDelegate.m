@@ -13,16 +13,30 @@
 @implementation YMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    [self configureLoginClient];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    // Yammer Sample App: YMHomeViewController is a sample with some basic functionality
+    // Yammer Sample App: YMSampleHomeViewController is a sample with some basic functionality
     self.ymSampleHomeViewController = [[YMSampleHomeViewController alloc] init];
 
     self.window.rootViewController = self.ymSampleHomeViewController;
     [self.window makeKeyAndVisible];
 
     return YES;
+}
+
+- (void)configureLoginClient
+{
+    /* Add your client ID here */
+    [[YMLoginClient sharedInstance] setAppClientID:@"APP CLIENT ID"];
+    
+    /* Add your client secret here */
+    [[YMLoginClient sharedInstance] setAppClientSecret:@"APP CLIENT SECRET"];
+    
+    /* Add your authorization redirect URI here */
+    [[YMLoginClient sharedInstance] setAuthRedirectURI:@"AUTH REDIRECT URI"];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

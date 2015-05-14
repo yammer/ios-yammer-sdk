@@ -27,16 +27,7 @@
 
 // This is called by clicking the login button in the sample interface.
 - (IBAction)login:(id)sender
-{
-    /* Add your client ID here */
-    [[YMLoginClient sharedInstance] setAppClientID:@"APP CLIENT ID"];
-    
-    /* Add your client secret here */
-    [[YMLoginClient sharedInstance] setAppClientSecret:@"APP CLIENT SECRET"];
-    
-    /* Add your authorization redirect URI here */
-    [[YMLoginClient sharedInstance] setAuthRedirectURI:@"AUTH REDIRECT URI"];
-    
+{    
     [[YMLoginClient sharedInstance] startLogin];
 }
 
