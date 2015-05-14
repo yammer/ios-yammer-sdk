@@ -53,6 +53,10 @@ NSString * const YMKeychainStateKey = @"yammerState";
 /////////////////////////////////////////////////////////
 - (void)startLogin
 {
+    NSAssert(self.appClientID, @"App client ID cannot be nil");
+    NSAssert(self.appClientSecret, @"App client secret cannot be nil");
+    NSAssert(self.authRedirectURI, @"Redirect URI cannot be nil");
+    
     NSString *stateParam = [self uniqueIdentifier];
     [[PDKeychainBindings sharedKeychainBindings] setObject:stateParam forKey:YMKeychainStateKey];
     
