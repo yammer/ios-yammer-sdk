@@ -76,7 +76,7 @@
     if (authToken) {
 
         NSLog(@"authToken: %@", authToken);
-        [self makeSampleAPICall: authToken];
+        [self makeSampleAPICall:authToken];
 
     } else {
 
@@ -107,7 +107,7 @@
     
     YMAPIClient *client = [[YMAPIClient alloc] initWithAuthToken:authToken];
     
-    __weak YMSampleHomeViewController* weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     
     // the postPath is where the path is appended to the baseUrl
     // the params are the query params
@@ -174,7 +174,7 @@
     // This is an example of only processing something after login if we were attempting to do something before the
     // login process was triggered.  In this case, we have an attemptingSampleAPICall boolean that tells us we were
     // trying to make the sample API call before login was triggered, so now we can resume that process here.
-    if ( self.attemptingSampleAPICall ) {
+    if (self.attemptingSampleAPICall) {
         
         // Reset the flag so we only come back here during logins that were triggered as part of trying to make the
         // sample API call.

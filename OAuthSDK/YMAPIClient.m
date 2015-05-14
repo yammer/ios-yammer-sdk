@@ -1,5 +1,5 @@
 //
-//  YMHTTPClient.m
+//  YMAPIClient.m
 //
 // Copyright (c) 2013 Yammer, Inc. All rights reserved.
 //

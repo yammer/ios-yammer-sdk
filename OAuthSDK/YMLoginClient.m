@@ -93,7 +93,7 @@ NSString * const YMKeychainStateKey = @"yammerState";
     BOOL isValid = NO;
 
     // Make sure redirect is coming from mobile safari and URL has correct prefix
-    if ([sourceApplication isEqualToString:YMMobileSafariString] && [url.absoluteString hasPrefix:self.authRedirectURI]){
+    if ([sourceApplication isEqualToString:YMMobileSafariString] && [url.absoluteString hasPrefix:self.authRedirectURI]) {
         NSDictionary *params = [url ym_queryParameters];
 
         NSString *state = params[@"state"];
@@ -115,10 +115,10 @@ NSString * const YMKeychainStateKey = @"yammerState";
 
         if (error) {
             NSString *errorString = error;
-            if ( error_reason ) {
+            if (error_reason) {
                 errorString = [errorString stringByAppendingString:error_reason];
             }
-            if ( error_description ) {
+            if (error_description) {
                 errorString = [errorString stringByAppendingString:error_description];
             }
 
@@ -130,7 +130,6 @@ NSString * const YMKeychainStateKey = @"yammerState";
             [self.delegate loginClient:self didFailWithError:error];
             [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification object:self userInfo:@{YMYammerSDKErrorUserInfoKey: error}];
         } else if (code) {
-
             NSLog(@"Credentials accepted, code received, on to part 2 of login process.");
 
             [self obtainAuthTokenForCode:code];
@@ -178,7 +177,8 @@ NSString * const YMKeychainStateKey = @"yammerState";
                  
                  [weakSelf.delegate loginClient:weakSelf didCompleteWithAuthToken:authToken];
                  [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidCompleteNotification object:weakSelf userInfo:@{YMYammerSDKAuthTokenUserInfoKey: authToken}];
-             } failure:^(NSInteger statusCode, NSError *error) {
+             }
+             failure:^(NSInteger statusCode, NSError *error) {
                  NSMutableDictionary *userInfo = [@{NSLocalizedDescriptionKey: @"Unable to retrieve authentication token from code"} mutableCopy];
                  if (error) {
                      userInfo[NSUnderlyingErrorKey] = error;
