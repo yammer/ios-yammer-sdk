@@ -1,25 +1,42 @@
 //
-//  YMHTTPClient.m
+//  YMAPIClient.m
 //
 // Copyright (c) 2013 Yammer, Inc. All rights reserved.
 //
 
-#import "YMLoginController.h"
-#import "YMHTTPClient.h"
+#import "YMLoginClient.h"
+#import "YMAPIClient.h"
 #import "NSURL+YMQueryParameters.h"
 #import <sys/utsname.h>
 
-@interface YMHTTPClient ()
+NSString * const YMBaseURL = @"https://www.yammer.com";
 
-@property (nonatomic, strong, readonly) AFHTTPRequestOperationManager *httpClient;
+@interface YMAPIClient ()
+
+@property (nonatomic, strong, readonly) AFHTTPRequestOperationManager *operationManager;
 @property (nonatomic, strong) NSURL *baseURL;
 
 @end
 
-@implementation YMHTTPClient
+@implementation YMAPIClient
 {
-    AFHTTPRequestOperationManager *_httpClient;
+    AFHTTPRequestOperationManager *_operationManager;
     NSString *_authToken;
+}
+
+- (instancetype)init
+{
+    return [self initWithAuthToken:nil];
+}
+
+- (instancetype)initWithAuthToken:(NSString *)authToken
+{
+    self = [super init];
+    if (self) {
+        _baseURL = [NSURL URLWithString:YMBaseURL];
+        _authToken = authToken;
+    }
+    return self;
 }
 
 - (void)setAuthToken:(NSString *)authToken
@@ -35,45 +52,23 @@
 
 - (void)updateAuthToken
 {
-    [_httpClient.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.authToken] forHTTPHeaderField:@"Authorization"];
+    [_operationManager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.authToken] forHTTPHeaderField:@"Authorization"];
 }
 
-- (id)initWithBaseURL:(NSURL *)baseURL
+- (AFHTTPRequestOperationManager *)operationManager
 {
-    self = [super init];
-    
-    if (self) {
-        _baseURL = baseURL;
-    }
-    
-    return self;
-}
+    if (_operationManager)
+        return _operationManager;
 
-- (id)initWithBaseURL:(NSURL *)baseURL authToken:(NSString *)authToken
-{
-    self = [self initWithBaseURL:baseURL];
-    
-    if (self) {
-        _authToken = authToken;
-    }
-    
-    return self;
-}
-
-- (AFHTTPRequestOperationManager *)httpClient
-{
-    if (_httpClient)
-        return _httpClient;
-
-    _httpClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:self.baseURL];
-    [_httpClient.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [_httpClient.requestSerializer setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
+    _operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:self.baseURL];
+    [_operationManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [_operationManager.requestSerializer setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
     
     if (self.authToken) {
         [self updateAuthToken];
     }
     
-    return _httpClient;
+    return _operationManager;
 }
 
 //example: Yammer/4.0.0.141 (iPhone; iPhone OS 5.0.1; tr_TR; en)
@@ -102,7 +97,7 @@
         failure:(void (^)(NSError *error))failure
 {
     NSLog(@"GET %@", path);
-    [self.httpClient GET:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.operationManager GET:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         success(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -116,7 +111,7 @@
          failure:(void (^)(NSInteger statusCode, NSError *error))failure
 {
     NSLog(@"POST %@", path);
-    [self.httpClient POST:path
+    [self.operationManager POST:path
                parameters:parameters
                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                       success(responseObject);

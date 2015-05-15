@@ -6,10 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YMLoginController.h"
 
 @class YMSampleHomeViewController;
-@class YMLoginController;
 
 @interface YMAppDelegate : UIResponder <UIApplicationDelegate>
 

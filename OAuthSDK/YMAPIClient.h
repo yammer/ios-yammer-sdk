@@ -1,5 +1,5 @@
 //
-//  YMHTTPClient.h
+//  YMAPIClient.h
 //
 //  Copyright (c) 2013 Yammer, Inc. All rights reserved.
 //
@@ -7,21 +7,20 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 
-static NSString *const STATE_PARAM = @"state";
+extern NSString * const YMBaseURL;
 
 /**
  Represents an object that contains a queue of HTTP operations.
  At the moment, this is essentially a lightweight wrapper around AFHTTPRequestOperationManager.
  */
-@interface YMHTTPClient : NSObject
-@property (nonatomic, strong) NSString *authToken;
+@interface YMAPIClient : NSObject
+@property (nonatomic, copy) NSString *authToken;
 
 /**
  Default initializer.
- @param baseURL The base URL.
+ @param authToken The OAuth token.
  */
-- (id)initWithBaseURL:(NSURL *)baseURL;
-- (id)initWithBaseURL:(NSURL *)baseURL authToken:(NSString *)authToken;
+- (id)initWithAuthToken:(NSString *)authToken;
 
 /**
  Performs an async GET request.
