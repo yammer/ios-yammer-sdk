@@ -1,4 +1,4 @@
-Yammer API Sample iOS Application
+Yammer SDK and Sample iOS Application
 =================================
 
 
@@ -14,6 +14,23 @@ It demonstrates a step-by-step process that does the following:
 
 In order to provide this functionality, some setup must be done.
 
+SDK Integration
+---------
+
+The SDK has been packaged as a Cocoapod. You can include the SDK in your project by installing Cocoapods, creating a Podfile and specifying that you want to include the YammerSDK pod. The first step is to install Cocoapods using:
+`sudo gem install cocoapods`
+
+Then create a file called Podfile in your project's directory, open it with a text editor and add the following lines:
+```
+platform :ios, '7.0'
+
+target 'YOURTARGET' do
+
+pod 'YammerSDK'
+
+end
+```
+Next type `pod install` from the command line in your project's folder. From now on you should open your project from the .xcworkspace file that Cocoapods has created.
 
 App Setup
 ---------
@@ -29,9 +46,23 @@ In the XCode Project Navigator, expand the Supporting Files group and open your 
 
 ![URL Scheme Setup Example][urlScheme]
 
-**Step 4)** Assuming you are going to include YMConstants.m in your app, open YMConstants.m and change **YAMMER_AUTH_REDIRECT_URI** to point to the Redirect URI from step 2 above.
-<br/>You will also need to change **YAMMER_APP_CLIENT_ID** and **YAMMER_APP_CLIENT_SECRET** to the values in your [Yammer
+**Step 4)** Update the following lines in the sample application's YMAppDelegate.m file with your client ID, secret and redirect URI from [Yammer
 client application](https://www.yammer.com/client_applications)
+
+```
+- (void)configureLoginClient
+{
+    /* Add your client ID here */
+    [[YMLoginClient sharedInstance] setAppClientID:@"APP CLIENT ID"];
+    
+    /* Add your client secret here */
+    [[YMLoginClient sharedInstance] setAppClientSecret:@"APP CLIENT SECRET"];
+    
+    /* Add your authorization redirect URI here */
+    [[YMLoginClient sharedInstance] setAuthRedirectURI:@"AUTH REDIRECT URI"];
+}
+```
+If you plan to use the SDK in your own app make sure you add these lines into your application's app delegate in the `application:didFinishLaunchingWithOptions:` method.
 
 **Step 5)** Open the sample application's YMAppDelegate.m file and look at the method with this signature:
 
