@@ -77,15 +77,15 @@ This is the method that is called when the user has logged in and they click the
 
 **Step 6)** Take a look at YMSampleHomeViewController.m to see a typical workflow for Yammer API calls and user authentication.  Start with the "attemptYammerApiCall" method.  This simulates what you would typically do in your application to access the Yammer API.  The first thing the code does is determine if the authToken is already available in the keychain.  If it is, it makes the API call using the authToken.  If not, it initiates the login process.
 
-The sample login code is in YMLoginController.m and starts with the method "startLogin".  Feel free to copy and paste as much sample code as you'd like from the sample app into your own app, including copying class files, etc.
+The sample login code is in YMLoginClient.m and starts with the method "startLogin".  Feel free to copy and paste as much sample code as you'd like from the sample app into your own app, including copying class files, etc.
 
 Login process
 -------------
 
-`-[YMLoginController startLogin]` launches the iOS Safari web browser.  The browser is launched
+`-[YMLoginClient startLogin]` launches the iOS Safari web browser.  The browser is launched
 with a URL like this: `https://www.yammer.com/dialog/oauth?client_id=<your_client_id>&redirect_uri=<your_redirect_uri>`
 <br/>
-This brings up the login page where the user enters their credentials.  After they type in their email address and password, they are presented with a page that will allow them to go back to the app where the rest of the authentication process takes place behind the scenes (`-[YMLoginController handleLoginRedirectFromUrl:sourceApplication:]`)
+This brings up the login page where the user enters their credentials.  After they type in their email address and password, they are presented with a page that will allow them to go back to the app where the rest of the authentication process takes place behind the scenes (`-[YMLoginClient handleLoginRedirectFromUrl:sourceApplication:]`)
 
 Once the redirect method completes successfully, the authToken is pulled from the returned JSON and stored in the keychain.  All subsequent calls to the Yammer API use this authToken as the key into the system.
 
