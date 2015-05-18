@@ -1,6 +1,7 @@
 Yammer SDK and Sample iOS Application
 =================================
 
+[![CI status](http://img.shields.io/travis/yammer/ios-yammer-sdk.svg?style=flat)](https://travis-ci.org/yammer/ios-yammer-sdk)
 
 Introduction
 ------------
