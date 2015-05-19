@@ -67,11 +67,14 @@
                         <action selector="deleteToken:" destination="-1" eventType="touchUpInside" id="24"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-Toolbox" translatesAutoresizingMaskIntoConstraints="NO" id="lcb-Wm-U6R">
-                    <rect key="frame" x="109" y="169" width="158" height="144"/>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-Toolbox" translatesAutoresizingMaskIntoConstraints="NO" id="lcb-Wm-U6R">
+                    <rect key="frame" x="109" y="161" width="158" height="160"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="160" id="0Q2-N8-lFP"/>
+                    </constraints>
                 </imageView>
                 <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVc-L7-4aB">
-                    <rect key="frame" x="173" y="323" width="30" height="30"/>
+                    <rect key="frame" x="173" y="331" width="30" height="30"/>
                     <state key="normal">
                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

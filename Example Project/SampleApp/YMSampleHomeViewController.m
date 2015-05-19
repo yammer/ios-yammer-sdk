@@ -74,6 +74,9 @@
     self.APICallButton.layer.borderWidth = borderWidth;
     self.APICallButton.layer.borderColor = [UIColor yamBlue].CGColor;
     self.APICallButton.backgroundColor = [UIColor yamBlue];
+    
+    [self.statusButton setTitleColor:[UIColor yamInformationalTextColor] forState:UIControlStateNormal];
+    self.tokenRemovedLabel.textColor = [UIColor yamInformationalTextColor];
 }
 
 // This is to test missing token functionality.  If there is no authToken, the app will have to login again before

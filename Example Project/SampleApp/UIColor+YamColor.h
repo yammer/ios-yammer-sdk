@@ -11,5 +11,7 @@
 @interface UIColor (YamColor)
 
 + (UIColor *)yamBlue;
++ (UIColor *)yamInformationalTextColor;
++ (UIColor *)yamAPIResultsTextColor;
 
 @end

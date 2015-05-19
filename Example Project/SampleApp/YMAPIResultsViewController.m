@@ -8,6 +8,7 @@
 
 #import "YMAPIResultsViewController.h"
 #import "YMNavigationBarTitleView.h"
+#import "UIColor+YamColor.h"
 
 @interface YMAPIResultsViewController ()
 
@@ -34,9 +35,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.navigationItem.titleView = [YMNavigationBarTitleView navigationBarTitleViewWithTitleText:@"API Results"];
 
+    [self styleViews];
+
+    self.navigationItem.titleView = [YMNavigationBarTitleView navigationBarTitleViewWithTitleText:@"API Results"];
 
     self.resultsTextView.text = self.results;
 }
@@ -51,6 +53,11 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)styleViews
+{
+    self.resultsTextView.textColor = [UIColor yamAPIResultsTextColor];
 }
 
 @end
