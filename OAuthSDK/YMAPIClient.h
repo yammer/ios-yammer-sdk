@@ -11,7 +11,7 @@ extern NSString * const YMBaseURL;
 
 /**
  Represents an object that contains a queue of HTTP operations.
- At the moment, this is essentially a lightweight wrapper around AFHTTPRequestOperationManager.
+ At the moment, this is essentially a lightweight wrapper around AFHTTPSessionManager.
  */
 @interface YMAPIClient : NSObject
 @property (nonatomic, copy) NSString *authToken;

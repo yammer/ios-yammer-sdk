@@ -13,14 +13,14 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 
 @interface YMAPIClient ()
 
-@property (nonatomic, strong, readonly) AFHTTPRequestOperationManager *operationManager;
+@property (nonatomic, strong, readonly) AFHTTPSessionManager *sessionManager;
 @property (nonatomic, strong) NSURL *baseURL;
 
 @end
 
 @implementation YMAPIClient
 {
-    AFHTTPRequestOperationManager *_operationManager;
+    AFHTTPSessionManager *_sessionManager;
     NSString *_authToken;
 }
 
@@ -52,23 +52,23 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 
 - (void)updateAuthToken
 {
-    [_operationManager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.authToken] forHTTPHeaderField:@"Authorization"];
+    [_sessionManager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.authToken] forHTTPHeaderField:@"Authorization"];
 }
 
-- (AFHTTPRequestOperationManager *)operationManager
+- (AFHTTPSessionManager *)sessionManager
 {
-    if (_operationManager)
-        return _operationManager;
-
-    _operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:self.baseURL];
-    [_operationManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [_operationManager.requestSerializer setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
+    if (_sessionManager)
+        return _sessionManager;
+    
+    _sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:self.baseURL];
+    [_sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [_sessionManager.requestSerializer setValue:[self userAgent] forHTTPHeaderField:@"User-Agent"];
     
     if (self.authToken) {
         [self updateAuthToken];
     }
     
-    return _operationManager;
+    return _sessionManager;
 }
 
 //example: Yammer/4.0.0.141 (iPhone; iPhone OS 5.0.1; tr_TR; en)
@@ -97,10 +97,9 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
         failure:(void (^)(NSError *error))failure
 {
     NSLog(@"GET %@", path);
-    [self.operationManager GET:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+    [self.sessionManager GET:path parameters:parameters success:^(NSURLSessionDataTask *dataTask, id responseObject) {
         success(responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
         failure(error);
     }];
 }
@@ -111,17 +110,16 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
          failure:(void (^)(NSInteger statusCode, NSError *error))failure
 {
     NSLog(@"POST %@", path);
-    [self.operationManager POST:path
-               parameters:parameters
-                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                      success(responseObject);
-                  }
-                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                      // Forward the error
-                      NSHTTPURLResponse *response = [operation response];
-                      NSInteger statusCode = [response statusCode];
-                      failure(statusCode, error);
-                  }];
+    [self.sessionManager POST:path
+                   parameters:parameters
+                      success:^(NSURLSessionDataTask *dataTask, id responseObject) {
+                          success(responseObject);
+                      }
+                      failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
+                          // Forward the error
+                          NSHTTPURLResponse *response = (NSHTTPURLResponse *) error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
+                          failure(response.statusCode, error);
+                      }];
 }
 
 @end
