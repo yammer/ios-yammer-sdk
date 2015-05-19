@@ -38,6 +38,8 @@
 - (IBAction)login:(id)sender
 {    
     [[YMLoginClient sharedInstance] startLogin];
+    
+    [self resetUI];
 }
 
 - (void)viewDidLoad
@@ -84,16 +86,18 @@
     [[YMLoginClient sharedInstance] clearAuthToken];
     
     [UIView animateWithDuration:1.0f
-                          delay:0.0f
-                        options:UIViewAnimationOptionAutoreverse
                      animations:^{
                          self.tokenRemovedLabel.alpha = 1.0f;
                          self.tokenRemovedImage.alpha = 1.0f;
                      }
                      completion:^(BOOL finished) {
-                         self.tokenRemovedLabel.alpha = 0.0f;
-                         self.tokenRemovedImage.alpha = 0.0f;
+                         [UIView animateWithDuration:1.0f
+                                          animations:^{
+                                              self.tokenRemovedLabel.alpha = 0.0f;
+                                              self.tokenRemovedImage.alpha = 0.0f;
+                                          }];
                      }];
+    [self resetUI];
 }
 
 - (IBAction)showResults:(id)sender
@@ -199,6 +203,15 @@
     [UIView animateWithDuration:1.0f animations:^{
         self.statusImageView.alpha = 1.0f;
     }];
+}
+
+- (void)resetUI
+{
+    [self.activityIndicator stopAnimating];
+    self.statusButton.userInteractionEnabled = NO;
+    self.statusButton.alpha = 0.0f;
+    
+    self.statusImageView.image = [UIImage imageNamed:@"Icon-Toolbox"];
 }
 
 - (void)showAlertViewForError:(NSError *)error title:(NSString *)title
