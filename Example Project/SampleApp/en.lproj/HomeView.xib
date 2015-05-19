@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="YMSampleHomeViewController">
+            <connections>
+                <outlet property="APICallButton" destination="25" id="xVa-oy-Awq"/>
+                <outlet property="activityIndicator" destination="APe-mk-ZSC" id="flj-he-jP2"/>
+                <outlet property="loginButton" destination="21" id="Ghd-Z9-YXP"/>
+                <outlet property="removeTokenButton" destination="23" id="Rke-g3-qkC"/>
+                <outlet property="statusButton" destination="sVc-L7-4aB" id="gpA-3U-HiS"/>
+                <outlet property="statusImageView" destination="lcb-Wm-U6R" id="bd0-fZ-gBM"/>
+                <outlet property="tokenRemovedImage" destination="Qmt-g4-fgk" id="QeY-zK-7Fc"/>
+                <outlet property="tokenRemovedLabel" destination="D05-No-xpC" id="k2c-ZD-AgJ"/>
+                <outlet property="view" destination="6" id="7"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="6">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25">
+                    <rect key="frame" x="10" y="539" width="355" height="44"/>
+                    <color key="backgroundColor" red="0.047058823529411764" green="0.36078431372549019" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="FX2-B7-NGn"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Attempt Yammer API Call">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="attemptYammerApiCall:" destination="-1" eventType="touchUpInside" id="26"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21">
+                    <rect key="frame" x="10" y="485" width="173" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="ZJk-eb-RUw"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Log In">
+                        <color key="titleColor" red="0.047058823529411764" green="0.36078431372549019" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="login:" destination="-1" eventType="touchUpInside" id="22"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="23" userLabel="Button - Delete token">
+                    <rect key="frame" x="193" y="485" width="172" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Uer-8X-Fyj"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Remove Token">
+                        <color key="titleColor" red="0.047058823529411764" green="0.36078431372549019" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="deleteToken:" destination="-1" eventType="touchUpInside" id="24"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-Toolbox" translatesAutoresizingMaskIntoConstraints="NO" id="lcb-Wm-U6R">
+                    <rect key="frame" x="109" y="169" width="158" height="144"/>
+                </imageView>
+                <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVc-L7-4aB">
+                    <rect key="frame" x="173" y="323" width="30" height="30"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="showResults:" destination="-1" eventType="touchUpInside" id="8wV-fv-TuZ"/>
+                    </connections>
+                </button>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="APe-mk-ZSC">
+                    <rect key="frame" x="177" y="231" width="20" height="20"/>
+                </activityIndicatorView>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token Removed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D05-No-xpC">
+                    <rect key="frame" x="126" y="10" width="124" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="Icon-SuccessSM" translatesAutoresizingMaskIntoConstraints="NO" id="Qmt-g4-fgk">
+                    <rect key="frame" x="107" y="13" width="17" height="16"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.9960784912109375" green="0.99215692281723022" blue="0.99215692281723022" alpha="1" colorSpace="deviceRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="25" secondAttribute="bottom" constant="20" id="5xZ-D7-gf3"/>
+                <constraint firstItem="21" firstAttribute="width" secondItem="23" secondAttribute="width" id="9tl-rn-u2X"/>
+                <constraint firstItem="Qmt-g4-fgk" firstAttribute="centerY" secondItem="D05-No-xpC" secondAttribute="centerY" id="Djm-8F-0G9"/>
+                <constraint firstAttribute="centerY" secondItem="APe-mk-ZSC" secondAttribute="centerY" multiplier="1.25" id="K1J-rb-BKB"/>
+                <constraint firstAttribute="trailing" secondItem="25" secondAttribute="trailing" constant="10" id="NRU-7t-Rec"/>
+                <constraint firstItem="21" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="10" id="QNL-gK-bbI"/>
+                <constraint firstAttribute="trailing" secondItem="23" secondAttribute="trailing" constant="10" id="U5a-ba-8kb"/>
+                <constraint firstAttribute="centerY" secondItem="lcb-Wm-U6R" secondAttribute="centerY" multiplier="1.25" id="VFY-zs-JAM"/>
+                <constraint firstItem="D05-No-xpC" firstAttribute="leading" secondItem="Qmt-g4-fgk" secondAttribute="trailing" constant="2" id="YkQ-0y-ocQ"/>
+                <constraint firstItem="sVc-L7-4aB" firstAttribute="top" secondItem="lcb-Wm-U6R" secondAttribute="bottom" constant="10" id="YoJ-f6-7xZ"/>
+                <constraint firstItem="25" firstAttribute="top" secondItem="23" secondAttribute="bottom" constant="10" id="b7b-US-b12"/>
+                <constraint firstItem="23" firstAttribute="leading" secondItem="21" secondAttribute="trailing" constant="10" id="daq-06-Q8N"/>
+                <constraint firstItem="25" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="10" id="dd2-Qf-vPg"/>
+                <constraint firstAttribute="centerX" secondItem="D05-No-xpC" secondAttribute="centerX" id="i4g-DL-agM"/>
+                <constraint firstItem="25" firstAttribute="top" secondItem="21" secondAttribute="bottom" constant="10" id="nr9-Jw-XFf"/>
+                <constraint firstAttribute="centerX" secondItem="sVc-L7-4aB" secondAttribute="centerX" id="qcw-av-GHu"/>
+                <constraint firstAttribute="centerX" secondItem="APe-mk-ZSC" secondAttribute="centerX" id="sig-Yy-245"/>
+                <constraint firstAttribute="centerX" secondItem="lcb-Wm-U6R" secondAttribute="centerX" id="skx-C9-gBL"/>
+                <constraint firstItem="D05-No-xpC" firstAttribute="top" secondItem="6" secondAttribute="top" constant="10" id="uMG-3d-k05"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <point key="canvasLocation" x="453.5" y="549.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Icon-SuccessSM" width="17" height="16"/>
+        <image name="Icon-Toolbox" width="158" height="144"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

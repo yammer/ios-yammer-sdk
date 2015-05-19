@@ -6,7 +6,16 @@
 //
 
 #import "YMSampleHomeViewController.h"
+#import "YMAPIResultsViewController.h"
 #import "YMAPIClient.h"
+#import "UIColor+YamColor.h"
+#import "YMNavigationBarTitleView.h"
+
+@interface YMSampleHomeViewController ()
+
+@property (nonatomic, copy) NSString *lastAPIResults;
+
+@end
 
 @implementation YMSampleHomeViewController
 
@@ -33,16 +42,36 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
+    self.navigationItem.titleView = [YMNavigationBarTitleView navigationBarTitleViewWithTitleText:@"Sample API App"];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCompleteLogin:) name:YMYammerSDKLoginDidCompleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailLogin:) name:YMYammerSDKLoginDidFailNotification object:nil];
-    [self updateUI];
+    
+    [self styleViews];
 }
 
-- (void)updateUI
+- (void)styleViews
 {
-    NSString *authToken = [[YMLoginClient sharedInstance] storedAuthToken];
-    [self.tokenExists setText:(authToken ? @"Yes" : @"No")];
-    [self.tokenExists setTextColor:(authToken ? [UIColor greenColor] : [UIColor redColor])];
+    CGFloat cornerRadius = 3.0f;
+    CGFloat borderWidth = 1.0f;
+    
+    [self.loginButton setTitleColor:[UIColor yamBlue] forState:UIControlStateNormal];
+    self.loginButton.layer.cornerRadius = cornerRadius;
+    self.loginButton.layer.borderWidth = borderWidth;
+    self.loginButton.layer.borderColor = [UIColor yamBlue].CGColor;
+    
+    [self.removeTokenButton setTitleColor:[UIColor yamBlue] forState:UIControlStateNormal];
+    self.removeTokenButton.layer.cornerRadius = cornerRadius;
+    self.removeTokenButton.layer.borderWidth = borderWidth;
+    self.removeTokenButton.layer.borderColor = [UIColor yamBlue].CGColor;
+    
+    [self.APICallButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.APICallButton.layer.cornerRadius = cornerRadius;
+    self.APICallButton.layer.borderWidth = borderWidth;
+    self.APICallButton.layer.borderColor = [UIColor yamBlue].CGColor;
+    self.APICallButton.backgroundColor = [UIColor yamBlue];
 }
 
 // This is to test missing token functionality.  If there is no authToken, the app will have to login again before
@@ -53,13 +82,24 @@
 - (IBAction)deleteToken:(id)sender
 {
     [[YMLoginClient sharedInstance] clearAuthToken];
-    [self updateUI];
+    
+    [UIView animateWithDuration:1.0f
+                          delay:0.0f
+                        options:UIViewAnimationOptionAutoreverse
+                     animations:^{
+                         self.tokenRemovedLabel.alpha = 1.0f;
+                         self.tokenRemovedImage.alpha = 1.0f;
+                     }
+                     completion:^(BOOL finished) {
+                         self.tokenRemovedLabel.alpha = 0.0f;
+                         self.tokenRemovedImage.alpha = 0.0f;
+                     }];
 }
 
-// This just clears JSON results text from the textview in the iPad version of the view.
-- (IBAction)clearResults:(id)sender
+- (IBAction)showResults:(id)sender
 {
-    self.resultsTextView.text = nil;
+    YMAPIResultsViewController *resultsViewController = [[YMAPIResultsViewController alloc] initWithResults:self.lastAPIResults];
+    [self.navigationController pushViewController:resultsViewController animated:YES];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,10 +114,8 @@
 
     // If the authToken exists, then attempt the sample API call.
     if (authToken) {
-
         NSLog(@"authToken: %@", authToken);
         [self makeSampleAPICall:authToken];
-
     } else {
 
         // This is an example of how you might
@@ -98,14 +136,12 @@
 {
     NSLog(@"Making sample API call");
 
-    // Clear out the results text before we begin call so you can see (in the sample app) that the results are
-    // coming in fresh.
-    self.resultsTextView.text = nil;
-
     // Query params (in this case there are no params, but if there were, this is how you'd add them)
-    NSDictionary *params = @{@"threaded": @"extended", @"limit": @30};
+    NSDictionary *params = @{ @"threaded": @"extended", @"limit": @30 };
     
     YMAPIClient *client = [[YMAPIClient alloc] initWithAuthToken:authToken];
+    
+    [self prepareForSampleAPICall];
     
     __weak typeof(self) weakSelf = self;
     
@@ -115,16 +151,54 @@
          parameters:params
             success:^(id responseObject) {
                 NSLog(@"Sample API Call JSON: %@", responseObject);
-                weakSelf.resultsTextView.text = [responseObject description];
+                weakSelf.lastAPIResults = [responseObject description];
+                
+                [weakSelf sampleAPICallSuccess];
             }
             failure:^(NSError *error) {
-                
                 NSLog(@"error: %@", error);
                 
-                // Replace this with whatever you want.  This is just an example of handling an error with an alert.
-                [self showAlertViewForError:error title:@"Error during sample API call"];
+                [weakSelf sampleAPICallFailureWithMessage:error.localizedDescription];
             }
      ];
+}
+
+- (void)prepareForSampleAPICall
+{
+    [self.activityIndicator startAnimating];
+    [self.statusButton setTitle:@"Calling API ..." forState:UIControlStateNormal];
+    self.statusButton.userInteractionEnabled = NO;
+    self.statusButton.alpha = 1.0f;
+    
+    self.statusImageView.alpha = 0.0f;
+}
+
+- (void)sampleAPICallSuccess
+{
+    [self.activityIndicator stopAnimating];
+    
+    [self.statusButton setTitle:@"API Results >" forState:UIControlStateNormal];
+    self.statusButton.userInteractionEnabled = YES;
+    self.statusButton.alpha = 1.0f;
+    
+    self.statusImageView.image = [UIImage imageNamed:@"Icon-Success"];
+    [UIView animateWithDuration:1.0f animations:^{
+        self.statusImageView.alpha = 1.0f;
+    }];
+}
+
+- (void)sampleAPICallFailureWithMessage:(NSString *)message
+{
+    [self.activityIndicator stopAnimating];
+    
+    [self.statusButton setTitle:message forState:UIControlStateNormal];
+    self.statusButton.userInteractionEnabled = NO;
+    self.statusButton.alpha = 1.0f;
+    
+    self.statusImageView.image = [UIImage imageNamed:@"Icon-Error"];
+    [UIView animateWithDuration:1.0f animations:^{
+        self.statusImageView.alpha = 1.0f;
+    }];
 }
 
 - (void)showAlertViewForError:(NSError *)error title:(NSString *)title
@@ -168,9 +242,7 @@
 #pragma mark - Common error/success handling methods
 
 - (void)handleSuccessWithToken:(NSString *)authToken
-{
-    [self updateUI];
-    
+{    
     // This is an example of only processing something after login if we were attempting to do something before the
     // login process was triggered.  In this case, we have an attemptingSampleAPICall boolean that tells us we were
     // trying to make the sample API call before login was triggered, so now we can resume that process here.
@@ -183,8 +255,7 @@
         // If the authToken exists, then attempt the sample API call.
         if (authToken) {
             [self makeSampleAPICall: authToken];
-        }
-        else {
+        } else {
             NSLog(@"Could not make sample API call.  AuthToken does not exist");
         }
     }
