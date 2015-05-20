@@ -213,6 +213,7 @@
     [self.activityIndicator stopAnimating];
     self.statusButton.userInteractionEnabled = NO;
     self.statusButton.alpha = 0.0f;
+    [self.statusButton setTitle:@"" forState:UIControlStateNormal];
     
     self.statusImageView.image = [UIImage imageNamed:@"Icon-Toolbox"];
 }

@@ -74,7 +74,7 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVc-L7-4aB">
-                    <rect key="frame" x="173" y="331" width="30" height="30"/>
+                    <rect key="frame" x="0.0" y="331" width="375" height="30"/>
                     <state key="normal">
                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -100,10 +100,12 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="25" secondAttribute="bottom" constant="20" id="5xZ-D7-gf3"/>
                 <constraint firstItem="21" firstAttribute="width" secondItem="23" secondAttribute="width" id="9tl-rn-u2X"/>
+                <constraint firstItem="sVc-L7-4aB" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="B7z-P4-sCV"/>
                 <constraint firstItem="Qmt-g4-fgk" firstAttribute="centerY" secondItem="D05-No-xpC" secondAttribute="centerY" id="Djm-8F-0G9"/>
                 <constraint firstAttribute="centerY" secondItem="APe-mk-ZSC" secondAttribute="centerY" multiplier="1.25" id="K1J-rb-BKB"/>
                 <constraint firstAttribute="trailing" secondItem="25" secondAttribute="trailing" constant="10" id="NRU-7t-Rec"/>
                 <constraint firstItem="21" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="10" id="QNL-gK-bbI"/>
+                <constraint firstAttribute="trailing" secondItem="sVc-L7-4aB" secondAttribute="trailing" id="TjU-lO-zHo"/>
                 <constraint firstAttribute="trailing" secondItem="23" secondAttribute="trailing" constant="10" id="U5a-ba-8kb"/>
                 <constraint firstAttribute="centerY" secondItem="lcb-Wm-U6R" secondAttribute="centerY" multiplier="1.25" id="VFY-zs-JAM"/>
                 <constraint firstItem="D05-No-xpC" firstAttribute="leading" secondItem="Qmt-g4-fgk" secondAttribute="trailing" constant="2" id="YkQ-0y-ocQ"/>
@@ -113,7 +115,6 @@
                 <constraint firstItem="25" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="10" id="dd2-Qf-vPg"/>
                 <constraint firstAttribute="centerX" secondItem="D05-No-xpC" secondAttribute="centerX" id="i4g-DL-agM"/>
                 <constraint firstItem="25" firstAttribute="top" secondItem="21" secondAttribute="bottom" constant="10" id="nr9-Jw-XFf"/>
-                <constraint firstAttribute="centerX" secondItem="sVc-L7-4aB" secondAttribute="centerX" id="qcw-av-GHu"/>
                 <constraint firstAttribute="centerX" secondItem="APe-mk-ZSC" secondAttribute="centerX" id="sig-Yy-245"/>
                 <constraint firstAttribute="centerX" secondItem="lcb-Wm-U6R" secondAttribute="centerX" id="skx-C9-gBL"/>
                 <constraint firstItem="D05-No-xpC" firstAttribute="top" secondItem="6" secondAttribute="top" constant="10" id="uMG-3d-k05"/>
