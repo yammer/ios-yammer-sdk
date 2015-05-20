@@ -15,9 +15,6 @@
 		3DE241E71B0AA2410047E9B8 /* APIResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE241E61B0AA2410047E9B8 /* APIResultsView.xib */; };
 		3DE241EF1B0AA3D40047E9B8 /* YMAPIResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE241EE1B0AA3D40047E9B8 /* YMAPIResultsViewController.m */; };
 		3DE241F71B0BA5580047E9B8 /* YMNavigationBarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE241F61B0BA5580047E9B8 /* YMNavigationBarTitleView.m */; };
-		3DE241FD1B0BAE5E0047E9B8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DE241FA1B0BAE5E0047E9B8 /* Default-568h@2x.png */; };
-		3DE241FE1B0BAE5E0047E9B8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DE241FB1B0BAE5E0047E9B8 /* Default.png */; };
-		3DE241FF1B0BAE5E0047E9B8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DE241FC1B0BAE5E0047E9B8 /* Default@2x.png */; };
 		4FFBD4B51777C17C00C2B71D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBD4B41777C17C00C2B71D /* UIKit.framework */; };
 		4FFBD4B71777C17C00C2B71D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBD4B61777C17C00C2B71D /* Foundation.framework */; };
 		4FFBD4B91777C17C00C2B71D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBD4B81777C17C00C2B71D /* CoreGraphics.framework */; };
@@ -37,9 +34,6 @@
 		3DE241EE1B0AA3D40047E9B8 /* YMAPIResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMAPIResultsViewController.m; sourceTree = "<group>"; };
 		3DE241F51B0BA5580047E9B8 /* YMNavigationBarTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMNavigationBarTitleView.h; sourceTree = "<group>"; };
 		3DE241F61B0BA5580047E9B8 /* YMNavigationBarTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMNavigationBarTitleView.m; sourceTree = "<group>"; };
-		3DE241FA1B0BAE5E0047E9B8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		3DE241FB1B0BAE5E0047E9B8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		3DE241FC1B0BAE5E0047E9B8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		4F0D177F1788025E00DFB39D /* YMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMAppDelegate.h; sourceTree = "<group>"; };
 		4F0D17801788025E00DFB39D /* YMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMAppDelegate.m; sourceTree = "<group>"; };
 		4F0D17811788025E00DFB39D /* YMSampleHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMSampleHomeViewController.h; sourceTree = "<group>"; };
@@ -152,9 +146,6 @@
 				4FFBD4BD1777C17C00C2B71D /* InfoPlist.strings */,
 				4FFBD4C01777C17C00C2B71D /* main.m */,
 				4FFBD4C21777C17C00C2B71D /* ios-oauth-demo-Prefix.pch */,
-				3DE241FA1B0BAE5E0047E9B8 /* Default-568h@2x.png */,
-				3DE241FB1B0BAE5E0047E9B8 /* Default.png */,
-				3DE241FC1B0BAE5E0047E9B8 /* Default@2x.png */,
 			);
 			name = "Supporting Files";
 			path = SampleApp;
@@ -236,11 +227,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DE241DF1B0A8B1E0047E9B8 /* Media.xcassets in Resources */,
-				3DE241FE1B0BAE5E0047E9B8 /* Default.png in Resources */,
 				4FFBD4BF1777C17C00C2B71D /* InfoPlist.strings in Resources */,
 				4FFBD4D11777C17C00C2B71D /* HomeView.xib in Resources */,
-				3DE241FD1B0BAE5E0047E9B8 /* Default-568h@2x.png in Resources */,
-				3DE241FF1B0BAE5E0047E9B8 /* Default@2x.png in Resources */,
 				3DE241E71B0AA2410047E9B8 /* APIResultsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,6 +366,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 15542C73847CDD99F3339428 /* Pods-SampleApp.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleApp/ios-oauth-demo-Prefix.pch";
 				INFOPLIST_FILE = "SampleApp/ios-oauth-demo-Info.plist";
@@ -390,6 +380,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AC7B5304393E3E817ABE70D3 /* Pods-SampleApp.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleApp/ios-oauth-demo-Prefix.pch";
 				INFOPLIST_FILE = "SampleApp/ios-oauth-demo-Info.plist";
