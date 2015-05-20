@@ -88,17 +88,20 @@
 {
     [[YMLoginClient sharedInstance] clearAuthToken];
     
-    [UIView animateWithDuration:1.0f
+    [UIView animateWithDuration:0.3f
                      animations:^{
                          self.tokenRemovedLabel.alpha = 1.0f;
                          self.tokenRemovedImage.alpha = 1.0f;
                      }
                      completion:^(BOOL finished) {
-                         [UIView animateWithDuration:1.0f
+                         [UIView animateWithDuration:0.3f
+                                               delay:3.0f
+                                             options:0
                                           animations:^{
                                               self.tokenRemovedLabel.alpha = 0.0f;
                                               self.tokenRemovedImage.alpha = 0.0f;
-                                          }];
+                                          }
+                                          completion:nil];
                      }];
     [self resetUI];
 }
@@ -189,7 +192,7 @@
     self.statusButton.alpha = 1.0f;
     
     self.statusImageView.image = [UIImage imageNamed:@"Icon-Success"];
-    [UIView animateWithDuration:1.0f animations:^{
+    [UIView animateWithDuration:0.3f animations:^{
         self.statusImageView.alpha = 1.0f;
     }];
 }
@@ -203,7 +206,7 @@
     self.statusButton.alpha = 1.0f;
     
     self.statusImageView.image = [UIImage imageNamed:@"Icon-Error"];
-    [UIView animateWithDuration:1.0f animations:^{
+    [UIView animateWithDuration:0.3f animations:^{
         self.statusImageView.alpha = 1.0f;
     }];
 }
