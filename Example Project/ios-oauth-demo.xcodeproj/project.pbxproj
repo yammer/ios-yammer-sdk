@@ -10,30 +10,34 @@
 		3DC963D11AF81B9B009D3BCC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FFBD4C01777C17C00C2B71D /* main.m */; };
 		3DC963D21AF81BA8009D3BCC /* YMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D17801788025E00DFB39D /* YMAppDelegate.m */; };
 		3DC963D31AF81BB2009D3BCC /* YMSampleHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D17821788025E00DFB39D /* YMSampleHomeViewController.m */; };
-		4F3614FC1777CD9E00238846 /* yammer-tagline.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F3614FA1777CD9E00238846 /* yammer-tagline.png */; };
-		4F3614FD1777CD9E00238846 /* yammer-tagline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F3614FB1777CD9E00238846 /* yammer-tagline@2x.png */; };
+		3DE241DF1B0A8B1E0047E9B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DE241DE1B0A8B1E0047E9B8 /* Media.xcassets */; };
+		3DE241E51B0A92730047E9B8 /* UIColor+YamColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE241E41B0A92730047E9B8 /* UIColor+YamColor.m */; };
+		3DE241E71B0AA2410047E9B8 /* APIResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE241E61B0AA2410047E9B8 /* APIResultsView.xib */; };
+		3DE241EF1B0AA3D40047E9B8 /* YMAPIResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE241EE1B0AA3D40047E9B8 /* YMAPIResultsViewController.m */; };
+		3DE241F71B0BA5580047E9B8 /* YMNavigationBarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE241F61B0BA5580047E9B8 /* YMNavigationBarTitleView.m */; };
 		4FFBD4B51777C17C00C2B71D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBD4B41777C17C00C2B71D /* UIKit.framework */; };
 		4FFBD4B71777C17C00C2B71D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBD4B61777C17C00C2B71D /* Foundation.framework */; };
 		4FFBD4B91777C17C00C2B71D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBD4B81777C17C00C2B71D /* CoreGraphics.framework */; };
 		4FFBD4BF1777C17C00C2B71D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4BD1777C17C00C2B71D /* InfoPlist.strings */; };
-		4FFBD4C71777C17C00C2B71D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4C61777C17C00C2B71D /* Default.png */; };
-		4FFBD4C91777C17C00C2B71D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4C81777C17C00C2B71D /* Default@2x.png */; };
-		4FFBD4CB1777C17C00C2B71D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4CA1777C17C00C2B71D /* Default-568h@2x.png */; };
-		4FFBD4D11777C17C00C2B71D /* HomeView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4CF1777C17C00C2B71D /* HomeView~iphone.xib */; };
-		4FFBD4D41777C17C00C2B71D /* HomeView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4D21777C17C00C2B71D /* HomeView~ipad.xib */; };
-		4FFBD4DF1777C58C00C2B71D /* blue-button-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4DC1777C58C00C2B71D /* blue-button-bg.png */; };
+		4FFBD4D11777C17C00C2B71D /* HomeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FFBD4CF1777C17C00C2B71D /* HomeView.xib */; };
 		8B335DDCD82CEA84CF5883F7 /* libPods-SampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3ED2D3A2C559891AA1BB4B /* libPods-SampleApp.a */; };
 		9CCFB45C2F0C51E6C7DB47F2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCFB69376D1B5E258760FAB /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		15542C73847CDD99F3339428 /* Pods-SampleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SampleApp/Pods-SampleApp.debug.xcconfig"; sourceTree = "<group>"; };
+		3DE241DE1B0A8B1E0047E9B8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		3DE241E31B0A92730047E9B8 /* UIColor+YamColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YamColor.h"; sourceTree = "<group>"; };
+		3DE241E41B0A92730047E9B8 /* UIColor+YamColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YamColor.m"; sourceTree = "<group>"; };
+		3DE241E61B0AA2410047E9B8 /* APIResultsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = APIResultsView.xib; sourceTree = "<group>"; };
+		3DE241ED1B0AA3D40047E9B8 /* YMAPIResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMAPIResultsViewController.h; sourceTree = "<group>"; };
+		3DE241EE1B0AA3D40047E9B8 /* YMAPIResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMAPIResultsViewController.m; sourceTree = "<group>"; };
+		3DE241F51B0BA5580047E9B8 /* YMNavigationBarTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMNavigationBarTitleView.h; sourceTree = "<group>"; };
+		3DE241F61B0BA5580047E9B8 /* YMNavigationBarTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMNavigationBarTitleView.m; sourceTree = "<group>"; };
 		4F0D177F1788025E00DFB39D /* YMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMAppDelegate.h; sourceTree = "<group>"; };
 		4F0D17801788025E00DFB39D /* YMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMAppDelegate.m; sourceTree = "<group>"; };
 		4F0D17811788025E00DFB39D /* YMSampleHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YMSampleHomeViewController.h; sourceTree = "<group>"; };
 		4F0D17821788025E00DFB39D /* YMSampleHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YMSampleHomeViewController.m; sourceTree = "<group>"; };
-		4F3614FA1777CD9E00238846 /* yammer-tagline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yammer-tagline.png"; sourceTree = "<group>"; };
-		4F3614FB1777CD9E00238846 /* yammer-tagline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yammer-tagline@2x.png"; sourceTree = "<group>"; };
 		4FFBD4B11777C17C00C2B71D /* SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FFBD4B41777C17C00C2B71D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4FFBD4B61777C17C00C2B71D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -42,12 +46,7 @@
 		4FFBD4BE1777C17C00C2B71D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FFBD4C01777C17C00C2B71D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4FFBD4C21777C17C00C2B71D /* ios-oauth-demo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ios-oauth-demo-Prefix.pch"; sourceTree = "<group>"; };
-		4FFBD4C61777C17C00C2B71D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		4FFBD4C81777C17C00C2B71D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		4FFBD4CA1777C17C00C2B71D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		4FFBD4D01777C17C00C2B71D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/HomeView~iphone.xib"; sourceTree = "<group>"; };
-		4FFBD4D31777C17C00C2B71D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/HomeView~ipad.xib"; sourceTree = "<group>"; };
-		4FFBD4DC1777C58C00C2B71D /* blue-button-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-button-bg.png"; sourceTree = "<group>"; };
+		4FFBD4D01777C17C00C2B71D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/HomeView.xib; sourceTree = "<group>"; };
 		9C3ED2D3A2C559891AA1BB4B /* libPods-SampleApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SampleApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CCFB69376D1B5E258760FAB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AC7B5304393E3E817ABE70D3 /* Pods-SampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SampleApp/Pods-SampleApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -76,6 +75,37 @@
 				AC7B5304393E3E817ABE70D3 /* Pods-SampleApp.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		3DE241F01B0AB9870047E9B8 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4F0D17811788025E00DFB39D /* YMSampleHomeViewController.h */,
+				4F0D17821788025E00DFB39D /* YMSampleHomeViewController.m */,
+				3DE241ED1B0AA3D40047E9B8 /* YMAPIResultsViewController.h */,
+				3DE241EE1B0AA3D40047E9B8 /* YMAPIResultsViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		3DE241F11B0AB9900047E9B8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4FFBD4CF1777C17C00C2B71D /* HomeView.xib */,
+				3DE241E61B0AA2410047E9B8 /* APIResultsView.xib */,
+				3DE241F51B0BA5580047E9B8 /* YMNavigationBarTitleView.h */,
+				3DE241F61B0BA5580047E9B8 /* YMNavigationBarTitleView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		3DE241F21B0AB9970047E9B8 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3DE241E31B0A92730047E9B8 /* UIColor+YamColor.h */,
+				3DE241E41B0A92730047E9B8 /* UIColor+YamColor.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		4FFBD4A81777C17C00C2B71D = {
@@ -116,9 +146,6 @@
 				4FFBD4BD1777C17C00C2B71D /* InfoPlist.strings */,
 				4FFBD4C01777C17C00C2B71D /* main.m */,
 				4FFBD4C21777C17C00C2B71D /* ios-oauth-demo-Prefix.pch */,
-				4FFBD4C61777C17C00C2B71D /* Default.png */,
-				4FFBD4C81777C17C00C2B71D /* Default@2x.png */,
-				4FFBD4CA1777C17C00C2B71D /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			path = SampleApp;
@@ -127,20 +154,9 @@
 		4FFBD4DA1777C58C00C2B71D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FFBD4DB1777C58C00C2B71D /* Images */,
+				3DE241DE1B0A8B1E0047E9B8 /* Media.xcassets */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		4FFBD4DB1777C58C00C2B71D /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				4F3614FA1777CD9E00238846 /* yammer-tagline.png */,
-				4F3614FB1777CD9E00238846 /* yammer-tagline@2x.png */,
-				4FFBD4DC1777C58C00C2B71D /* blue-button-bg.png */,
-			);
-			name = Images;
-			path = images;
 			sourceTree = "<group>";
 		};
 		9CCFB4318BB6A2545FCCE84D /* SampleApp */ = {
@@ -149,10 +165,9 @@
 				4FFBD4DA1777C58C00C2B71D /* Resources */,
 				4F0D177F1788025E00DFB39D /* YMAppDelegate.h */,
 				4F0D17801788025E00DFB39D /* YMAppDelegate.m */,
-				4F0D17811788025E00DFB39D /* YMSampleHomeViewController.h */,
-				4F0D17821788025E00DFB39D /* YMSampleHomeViewController.m */,
-				4FFBD4CF1777C17C00C2B71D /* HomeView~iphone.xib */,
-				4FFBD4D21777C17C00C2B71D /* HomeView~ipad.xib */,
+				3DE241F01B0AB9870047E9B8 /* View Controllers */,
+				3DE241F11B0AB9900047E9B8 /* Views */,
+				3DE241F21B0AB9970047E9B8 /* Categories */,
 			);
 			path = SampleApp;
 			sourceTree = SOURCE_ROOT;
@@ -211,15 +226,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE241DF1B0A8B1E0047E9B8 /* Media.xcassets in Resources */,
 				4FFBD4BF1777C17C00C2B71D /* InfoPlist.strings in Resources */,
-				4FFBD4C71777C17C00C2B71D /* Default.png in Resources */,
-				4FFBD4C91777C17C00C2B71D /* Default@2x.png in Resources */,
-				4FFBD4CB1777C17C00C2B71D /* Default-568h@2x.png in Resources */,
-				4FFBD4D11777C17C00C2B71D /* HomeView~iphone.xib in Resources */,
-				4FFBD4D41777C17C00C2B71D /* HomeView~ipad.xib in Resources */,
-				4FFBD4DF1777C58C00C2B71D /* blue-button-bg.png in Resources */,
-				4F3614FC1777CD9E00238846 /* yammer-tagline.png in Resources */,
-				4F3614FD1777CD9E00238846 /* yammer-tagline@2x.png in Resources */,
+				4FFBD4D11777C17C00C2B71D /* HomeView.xib in Resources */,
+				3DE241E71B0AA2410047E9B8 /* APIResultsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,8 +274,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DC963D31AF81BB2009D3BCC /* YMSampleHomeViewController.m in Sources */,
+				3DE241EF1B0AA3D40047E9B8 /* YMAPIResultsViewController.m in Sources */,
 				3DC963D21AF81BA8009D3BCC /* YMAppDelegate.m in Sources */,
+				3DE241F71B0BA5580047E9B8 /* YMNavigationBarTitleView.m in Sources */,
 				3DC963D11AF81B9B009D3BCC /* main.m in Sources */,
+				3DE241E51B0A92730047E9B8 /* UIColor+YamColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,20 +293,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FFBD4CF1777C17C00C2B71D /* HomeView~iphone.xib */ = {
+		4FFBD4CF1777C17C00C2B71D /* HomeView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				4FFBD4D01777C17C00C2B71D /* en */,
 			);
-			name = "HomeView~iphone.xib";
-			sourceTree = "<group>";
-		};
-		4FFBD4D21777C17C00C2B71D /* HomeView~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4FFBD4D31777C17C00C2B71D /* en */,
-			);
-			name = "HomeView~ipad.xib";
+			name = HomeView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -361,6 +366,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 15542C73847CDD99F3339428 /* Pods-SampleApp.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleApp/ios-oauth-demo-Prefix.pch";
 				INFOPLIST_FILE = "SampleApp/ios-oauth-demo-Info.plist";
@@ -373,6 +380,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AC7B5304393E3E817ABE70D3 /* Pods-SampleApp.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleApp/ios-oauth-demo-Prefix.pch";
 				INFOPLIST_FILE = "SampleApp/ios-oauth-demo-Info.plist";

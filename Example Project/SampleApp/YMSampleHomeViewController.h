@@ -10,9 +10,16 @@
 
 @interface YMSampleHomeViewController : UIViewController <YMLoginClientDelegate>
 
-@property (nonatomic) BOOL attemptingSampleAPICall;
-@property (weak, nonatomic) IBOutlet UITextView *resultsTextView;
-@property (weak, nonatomic) IBOutlet UILabel *tokenExists;
+@property (nonatomic, assign) BOOL attemptingSampleAPICall;
+
+@property (nonatomic, weak) IBOutlet UIButton *loginButton;
+@property (nonatomic, weak) IBOutlet UIButton *removeTokenButton;
+@property (nonatomic, weak) IBOutlet UIButton *APICallButton;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) IBOutlet UILabel *tokenRemovedLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *tokenRemovedImage;
+@property (nonatomic, weak) IBOutlet UIImageView *statusImageView;
+@property (nonatomic, weak) IBOutlet UIButton *statusButton;
 
 // Yammer Sample App
 
@@ -29,7 +36,6 @@
 // This deletes the authToken from the keychain (for testing purposes)
 - (IBAction)deleteToken:(id)sender;
 
-// This clears the sample API call JSON results from the text field on the iPad. (for testing API calls)
-- (IBAction)clearResults:(id)sender;
+- (IBAction)showResults:(id)sender;
 
 @end
