@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 
-extern NSString * const YMBaseURL;
+FOUNDATION_EXPORT NSString * const YMBaseURL;
 
 /**
  Represents an object that contains a queue of HTTP operations.
@@ -39,5 +39,13 @@ extern NSString * const YMBaseURL;
  @param failure The failure block
  */
 - (void)postPath:(NSString *)path parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSInteger statusCode, NSError *error))failure;
+
+/**
+ Retrieves the currently logged in user's groups
+ @param page Which page of 50 groups to return
+ @param success The success block
+ @param failure The failure block
+ */
+- (void)groupsForCurrentUserWithPage:(NSUInteger)page success:(void (^)(NSArray *groups))success failure:(void (^)(NSError *error))failure;
 
 @end

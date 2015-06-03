@@ -5,11 +5,11 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const YMYammerSDKLoginDidCompleteNotification;
-extern NSString * const YMYammerSDKLoginDidFailNotification;
+FOUNDATION_EXPORT NSString * const YMYammerSDKLoginDidCompleteNotification;
+FOUNDATION_EXPORT NSString * const YMYammerSDKLoginDidFailNotification;
 
-extern NSString * const YMYammerSDKAuthTokenUserInfoKey;
-extern NSString * const YMYammerSDKErrorUserInfoKey;
+FOUNDATION_EXPORT NSString * const YMYammerSDKAuthTokenUserInfoKey;
+FOUNDATION_EXPORT NSString * const YMYammerSDKErrorUserInfoKey;
 
 @protocol YMLoginClientDelegate;
 

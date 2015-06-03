@@ -7,6 +7,7 @@
 #import "YMLoginClient.h"
 #import "YMAPIClient.h"
 #import "NSURL+YMQueryParameters.h"
+#import "YMGroup.h"
 #import <sys/utsname.h>
 
 NSString * const YMBaseURL = @"https://www.yammer.com";
@@ -120,6 +121,27 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
                           NSHTTPURLResponse *response = (NSHTTPURLResponse *) error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
                           failure(response.statusCode, error);
                       }];
+}
+
+- (void)groupsForCurrentUserWithPage:(NSUInteger)page
+                             success:(void (^)(NSArray *groups))success
+                             failure:(void (^)(NSError *error))failure
+{
+    NSString *path = @"/api/v1/groups";
+    
+    NSDictionary *parameters = @{
+                                 @"mine" : @YES,
+                                 @"page" : @(page)
+                                 };
+    
+    [self.sessionManager GET:path parameters:parameters success:^(NSURLSessionDataTask *task, NSArray *responseObject) {
+        NSError *error;
+        NSArray *groups = [MTLJSONAdapter modelsOfClass:YMGroup.class fromJSONArray:responseObject error:&error];
+        
+        success(groups);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failure(error);
+    }];
 }
 
 @end

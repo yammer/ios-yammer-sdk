@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'AFNetworking', '~> 2.0'
   s.dependency 'PDKeychainBindingsController'
+  s.dependency 'Mantle'
 end
