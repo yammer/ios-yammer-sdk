@@ -1,8 +1,24 @@
+// The MIT License (MIT)
 //
-//  YMAPIClient.m
+// Copyright (c) 2015 Microsoft
 //
-// Copyright (c) 2013 Yammer, Inc. All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "YMLoginClient.h"
 #import "YMAPIClient.h"
@@ -97,11 +113,14 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
         failure:(void (^)(NSError *error))failure
 {
     NSLog(@"GET %@", path);
-    [self.sessionManager GET:path parameters:parameters success:^(NSURLSessionDataTask *dataTask, id responseObject) {
-        success(responseObject);
-    } failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
-        failure(error);
-    }];
+    [self.sessionManager GET:path
+                  parameters:parameters
+                     success:^(NSURLSessionDataTask *dataTask, id responseObject) {
+                         success(responseObject);
+                     }
+                     failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
+                         failure(error);
+                     }];
 }
 
 - (void)postPath:(NSString *)path
@@ -120,6 +139,38 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
                           NSHTTPURLResponse *response = (NSHTTPURLResponse *) error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
                           failure(response.statusCode, error);
                       }];
+}
+
+- (void)deletePath:(NSString *)path
+        parameters:(NSDictionary *)parameters
+           success:(void (^)(id responseObject))success
+           failure:(void (^)(NSError *error))failure
+{
+    NSLog(@"DELETE %@", path);
+    [self.sessionManager DELETE:path
+                     parameters:parameters
+                        success:^(NSURLSessionDataTask *dataTask, id responseObject) {
+                            success(responseObject);
+                        }
+                        failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
+                            failure(error);
+                        }];
+}
+
+- (void)putPath:(NSString *)path
+     parameters:(NSDictionary *)parameters
+        success:(void (^)(id responseObject))success
+        failure:(void (^)(NSError *error))failure
+{
+    NSLog(@"PUT %@", path);
+    [self.sessionManager PUT:path
+                  parameters:parameters
+                     success:^(NSURLSessionDataTask *dataTask, id responseObject) {
+                         success(responseObject);
+                     }
+                     failure:^(NSURLSessionDataTask *dataTask, NSError *error) {
+                         failure(error);
+                     }];
 }
 
 @end
