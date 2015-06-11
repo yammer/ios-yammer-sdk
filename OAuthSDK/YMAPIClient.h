@@ -23,20 +23,27 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const YMBaseURL;
+
+typedef void(^successCallback)(id __nullable responseObject);
+typedef void(^failureStatusCodeCallback)(NSInteger statusCode, NSError *error);
+typedef void(^failureCallback)(NSError *error);
 
 /**
  Represents an object that contains a queue of HTTP operations.
  At the moment, this is essentially a lightweight wrapper around AFHTTPSessionManager.
  */
 @interface YMAPIClient : NSObject
-@property (nonatomic, copy) NSString *authToken;
+
+@property (nonatomic, copy, nullable) NSString *authToken;
 
 /**
  Default initializer.
  @param authToken The OAuth token.
  */
-- (id)initWithAuthToken:(NSString *)authToken;
+- (instancetype)initWithAuthToken:(nullable NSString *)authToken;
 
 /**
  Performs an async GET request.
@@ -45,7 +52,10 @@ extern NSString * const YMBaseURL;
  @param success The success block
  @param failure The failure block
  */
-- (void)getPath:(NSString *)path parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)getPath:(NSString *)path
+     parameters:(nullable NSDictionary *)parameters
+        success:(nullable successCallback)success
+        failure:(nullable failureCallback)failure;
 
 /**
  Performs an async POST request.
@@ -54,7 +64,10 @@ extern NSString * const YMBaseURL;
  @param success The success block
  @param failure The failure block
  */
-- (void)postPath:(NSString *)path parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSInteger statusCode, NSError *error))failure;
+- (void)postPath:(NSString *)path
+      parameters:(nullable NSDictionary *)parameters
+         success:(nullable successCallback)success
+         failure:(nullable failureStatusCodeCallback)failure;
 
 /**
  Performs an async DELETE request.
@@ -63,7 +76,10 @@ extern NSString * const YMBaseURL;
  @param success The success block
  @param failure The failure block
  */
-- (void)deletePath:(NSString *)path parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)deletePath:(NSString *)path
+        parameters:(nullable NSDictionary *)parameters
+           success:(nullable successCallback)success
+           failure:(nullable failureCallback)failure;
 
 /**
  Performs an async PUT request.
@@ -72,7 +88,11 @@ extern NSString * const YMBaseURL;
  @param success The success block
  @param failure The failure block
  */
-- (void)putPath:(NSString *)path parameters:(NSDictionary *)parameters success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)putPath:(NSString *)path
+     parameters:(nullable NSDictionary *)parameters
+        success:(nullable successCallback)success
+        failure:(nullable failureCallback)failure;
 
+NS_ASSUME_NONNULL_END
 
 @end

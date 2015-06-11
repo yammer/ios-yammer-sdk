@@ -25,6 +25,8 @@
 #import "NSURL+YMQueryParameters.h"
 #import <sys/utsname.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 NSString * const YMBaseURL = @"https://www.yammer.com";
 
 @interface YMAPIClient ()
@@ -37,7 +39,7 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 @implementation YMAPIClient
 {
     AFHTTPSessionManager *_sessionManager;
-    NSString *_authToken;
+    NSString * __nullable _authToken;
 }
 
 - (instancetype)init
@@ -45,7 +47,7 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
     return [self initWithAuthToken:nil];
 }
 
-- (instancetype)initWithAuthToken:(NSString *)authToken
+- (instancetype)initWithAuthToken:(nullable NSString *)authToken
 {
     self = [super init];
     if (self) {
@@ -55,15 +57,10 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
     return self;
 }
 
-- (void)setAuthToken:(NSString *)authToken
+- (void)setAuthToken:(nullable NSString *)authToken
 {
     _authToken = authToken;
     [self updateAuthToken];
-}
-
-- (NSString *)authToken
-{
-    return _authToken;
 }
 
 - (void)updateAuthToken
@@ -108,9 +105,9 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 }
 
 - (void)getPath:(NSString *)path
-     parameters:(NSDictionary *)parameters
-        success:(void (^)(id responseObject))success
-        failure:(void (^)(NSError *error))failure
+     parameters:(nullable NSDictionary *)parameters
+        success:(nullable successCallback)success
+        failure:(nullable failureCallback)failure
 {
     NSLog(@"GET %@", path);
     [self.sessionManager GET:path
@@ -124,9 +121,9 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 }
 
 - (void)postPath:(NSString *)path
-      parameters:(NSDictionary *)parameters
-         success:(void (^)(id responseObject))success
-         failure:(void (^)(NSInteger statusCode, NSError *error))failure
+      parameters:(nullable NSDictionary *)parameters
+         success:(nullable successCallback)success
+         failure:(nullable failureStatusCodeCallback)failure
 {
     NSLog(@"POST %@", path);
     [self.sessionManager POST:path
@@ -142,9 +139,9 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 }
 
 - (void)deletePath:(NSString *)path
-        parameters:(NSDictionary *)parameters
-           success:(void (^)(id responseObject))success
-           failure:(void (^)(NSError *error))failure
+        parameters:(nullable NSDictionary *)parameters
+           success:(nullable successCallback)success
+           failure:(nullable failureCallback)failure
 {
     NSLog(@"DELETE %@", path);
     [self.sessionManager DELETE:path
@@ -158,9 +155,9 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
 }
 
 - (void)putPath:(NSString *)path
-     parameters:(NSDictionary *)parameters
-        success:(void (^)(id responseObject))success
-        failure:(void (^)(NSError *error))failure
+     parameters:(nullable NSDictionary *)parameters
+        success:(nullable successCallback)success
+        failure:(nullable failureCallback)failure
 {
     NSLog(@"PUT %@", path);
     [self.sessionManager PUT:path
@@ -172,5 +169,7 @@ NSString * const YMBaseURL = @"https://www.yammer.com";
                          failure(error);
                      }];
 }
+
+NS_ASSUME_NONNULL_END
 
 @end
