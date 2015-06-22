@@ -99,4 +99,9 @@
     return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
 }
 
+- (id)objectForKeyedSubscript:(NSString *)key
+{
+    return key ? self.dictionaryValue[key] : nil;
+}
+
 @end

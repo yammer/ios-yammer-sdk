@@ -34,4 +34,6 @@
 @property (nonatomic, strong, readonly) NSURL *URL;
 @property (nonatomic, strong, readonly) NSURL *webURL;
 
+- (id)objectForKeyedSubscript:(NSString *)key;
+
 @end
