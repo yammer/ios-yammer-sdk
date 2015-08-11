@@ -21,7 +21,7 @@ The SDK has been packaged as a Cocoapod. You can include the SDK in your project
 `sudo gem install cocoapods`
 
 Then create a file called Podfile in your project's directory, open it with a text editor and add the following lines:
-```
+```ruby
 platform :ios, '7.0'
 
 target 'YOURTARGET' do
@@ -49,7 +49,7 @@ In the XCode Project Navigator, expand the Supporting Files group and open your 
 **Step 4)** Update the following lines in the sample application's YMAppDelegate.m file with your client ID, secret and redirect URI from [Yammer
 client application](https://www.yammer.com/client_applications)
 
-```
+```objectivec
 - (void)configureLoginClient
 {
     /* Add your client ID here */
