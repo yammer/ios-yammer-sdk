@@ -32,6 +32,24 @@ end
 ```
 Next type `pod install` from the command line in your project's folder. From now on you should open your project from the .xcworkspace file that CocoaPods has created.
 
+**Swift Integration**
+
+Using the YammerSDK CocoaPod in a Swift project is quite straightforward. In addition to the steps outlined above you will need to create an Objective-C bridging header and import the YammerSDK.
+
+In Xcode go to File->New and in the dialog that shows up go to source and select header file. Name the file YourProjectName-Bridging-Header.h and take note of the file path.
+
+In the build settings for your project go to the section called "Swift Compiler - Code Generation" and change the "Objective-C Bridging Header" property so that it points to your bridging header. Note that the path to your bridging header is relative to your project's root directory, so you don't need to specify the path to your project. Your bridging header should look something like this:
+
+```c
+#ifndef test_Bridging_Header_h
+#define test_Bridging_Header_h
+
+#import "YammerSDK/YMAPIClient.h"
+#import "YammerSDK/YMLoginClient.h"
+
+#endif
+```
+
 App Setup
 ---------
 
@@ -46,7 +64,7 @@ In the XCode Project Navigator, expand the Supporting Files group and open your 
 
 ![URL Scheme Setup Example][urlScheme]
 
-**Step 4)** Add the following lines into your application's app delegate: in the `application:didFinishLaunchingWithOptions:` method using values from [Yammer
+**Step 4)** Add the following lines into your application's app delegate in the `application:didFinishLaunchingWithOptions:` method using values from [Yammer
 client application](https://www.yammer.com/client_applications)
 
 **Objective-C:**
@@ -84,11 +102,11 @@ func application(application: UIApplication, openURL url: NSURL, sourceApplicati
 ```
 This is the method that is called when the user has logged in and they click the "Allow" button in the safari login web page. That "Allow" button will call the custom URI from step 2 above. In order for your application to provide the same "re-entry" functionality, you need to add this app delegate method to your iOS app delegate.
 
-**Note:** Once the server sees that a user has clicked the Allow button, future login requests do not display the page with the Allow button. This is a one time occurance for each unique user/yammer-app combination. Subsequent login attempts will return directly to the iOS app without the Allow page.
+**Note:** Once the server sees that a user has clicked the Allow button, future login requests do not display the page with the Allow button. This is a one time occurence for each unique user/yammer-app combination. Subsequent login attempts will return directly to the iOS app without the Allow page.
 
-**Step 6)** Take a look at YMSampleHomeViewController.m to see a typical workflow for Yammer API calls and user authentication. Start with the "attemptYammerApiCall" method. This simulates what you would typically do in your application to access the Yammer API. The first thing the code does is determine if the authToken is already available in the keychain. If it is, it makes the API call using the authToken. If not, it initiates the login process.
+**Step 6)** Take a look at YMSampleHomeViewController.m to see a typical workflow for Yammer API calls and user authentication. Start with the `attemptYammerApiCall` method. This simulates what you would typically do in your application to access the Yammer API. The first thing the code does is determine if the authToken is already available in the keychain. If it is, it makes the API call using the authToken. If not, it initiates the login process.
 
-The sample login code is in YMLoginClient.m and starts with the method "startLogin". Feel free to copy and paste as much sample code as you'd like from the sample app into your own app, including copying class files, etc.
+The sample login code is in YMLoginClient.m and starts with the method `startLogin`. Feel free to copy and paste as much sample code as you'd like from the sample app into your own app, including copying class files, etc.
 
 Login process
 -------------
