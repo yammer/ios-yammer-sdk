@@ -1,4 +1,4 @@
-// The MIT License (MIT)
+// YMAPIClient.h
 //
 // Copyright (c) 2015 Microsoft
 //
