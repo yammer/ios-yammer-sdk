@@ -50,6 +50,7 @@ NSString * const YMKeychainStateKey = @"yammerState";
 
 @property (nonatomic, strong) YMAPIClient *client;
 @property (nonatomic, strong) YMAPIClient *tokensClient;
+@property (nonatomic, strong) NSCache *tokenCache;
 
 @end
 
@@ -72,6 +73,7 @@ NSString * const YMKeychainStateKey = @"yammerState";
     if (self) {
         _client = [[YMAPIClient alloc] init];
         _tokensClient = [[YMAPIClient alloc] init];
+        _tokenCache = [[NSCache alloc] init];
     }
     return self;
 }
@@ -262,6 +264,8 @@ NSString * const YMKeychainStateKey = @"yammerState";
 
 - (void)clearAuthToken
 {
+    [self.tokenCache removeObjectForKey:YMKeychainAuthTokenKey];
+
     [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:YMKeychainAuthTokenKey];
 }
 
@@ -271,22 +275,36 @@ NSString * const YMKeychainStateKey = @"yammerState";
         return;
     }
     
-    PDKeychainBindings *bindings = [PDKeychainBindings sharedKeychainBindings];
-    [bindings setObject:authToken forKey:tokenKey];
+    [self.tokenCache setObject:authToken forKey:tokenKey];
+    
+    [[PDKeychainBindings sharedKeychainBindings] setObject:authToken forKey:tokenKey];
 }
 
 - (NSString *)storedAuthToken
 {
-    return [[PDKeychainBindings sharedKeychainBindings] objectForKey:YMKeychainAuthTokenKey];
+    return [self retrieveAuthTokenForKey:YMKeychainAuthTokenKey];
 }
 
 - (NSString *)storedAuthTokenForNetworkPermalink:(NSString *)networkPermalink
 {
-    if (!networkPermalink) {
+    return [self retrieveAuthTokenForKey:networkPermalink];
+}
+
+- (NSString *)retrieveAuthTokenForKey:(NSString *)tokenKey
+{
+    if (!tokenKey) {
         return nil;
     }
     
-    return [[PDKeychainBindings sharedKeychainBindings] objectForKey:networkPermalink];
+    NSString *authToken = [self.tokenCache objectForKey:tokenKey];
+    if (authToken) {
+        return authToken;
+    }
+    
+    authToken = [[PDKeychainBindings sharedKeychainBindings] objectForKey:tokenKey];
+    [self.tokenCache setObject:authToken forKey:tokenKey];
+    
+    return authToken;
 }
 
 @end
