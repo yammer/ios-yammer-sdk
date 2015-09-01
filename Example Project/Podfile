@@ -6,3 +6,8 @@ pod 'YammerSDK', "~> 1.0"
 
 end
 
+target 'SampleAppTests' do
+
+pod 'YammerSDK', "~> 1.0"
+
+end
