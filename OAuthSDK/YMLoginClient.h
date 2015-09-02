@@ -1,3 +1,4 @@
+//
 // YMLoginClient.h
 //
 // Copyright (c) 2015 Microsoft
@@ -22,11 +23,11 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const YMYammerSDKLoginDidCompleteNotification;
-extern NSString * const YMYammerSDKLoginDidFailNotification;
+FOUNDATION_EXPORT NSString * const YMYammerSDKLoginDidCompleteNotification;
+FOUNDATION_EXPORT NSString * const YMYammerSDKLoginDidFailNotification;
 
-extern NSString * const YMYammerSDKAuthTokenUserInfoKey;
-extern NSString * const YMYammerSDKErrorUserInfoKey;
+FOUNDATION_EXPORT NSString * const YMYammerSDKAuthTokenUserInfoKey;
+FOUNDATION_EXPORT NSString * const YMYammerSDKErrorUserInfoKey;
 
 @protocol YMLoginClientDelegate;
 
@@ -41,9 +42,26 @@ extern NSString * const YMYammerSDKErrorUserInfoKey;
 + (YMLoginClient *)sharedInstance;
 
 - (void)startLogin;
+
 - (BOOL)handleLoginRedirectFromUrl:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+
+/**
+ Asynchronously load the tokens from all networks using the stored Oauth token
+ and store them in the keychain using the network's permalink
+ @param completion A block that is called on completion
+ */
+- (void)refreshNetworkTokensWithCompletion:(void (^)(NSError *error))completion;
+
 - (NSString *)storedAuthToken;
-- (void)clearAuthToken;
+
+/**
+ Returns a network token based on the network's permalink
+ @param networkPermalink The network's permalink
+ @return The auth token for the network
+ */
+- (NSString *)storedAuthTokenForNetworkPermalink:(NSString *)networkPermalink;
+
+- (void)clearAuthTokens;
 
 @end
 

@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
 
   s.dependency 'AFNetworking', '~> 2.0'
-  s.dependency 'PDKeychainBindingsController'
+  s.dependency 'SSKeychain'
 end

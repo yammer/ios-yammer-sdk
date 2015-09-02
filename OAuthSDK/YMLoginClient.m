@@ -1,3 +1,4 @@
+//
 // YMLoginClient.m
 //
 // Copyright (c) 2015 Microsoft
@@ -21,19 +22,16 @@
 // THE SOFTWARE.
 
 #import "YMLoginClient.h"
-#import "PDKeychainBindings.h"
+#import <SSKeychain/SSKeychain.h>
 #import "YMAPIClient.h"
 #import "NSURL+YMQueryParameters.h"
-
-/////////////////////////////////////////////////////////
-// Yammer iOS Client SDK
-/////////////////////////////////////////////////////////
 
 NSString * const YMMobileSafariString = @"com.apple.mobilesafari";
 NSString * const YMYammerSDKErrorDomain = @"com.yammer.YammerSDK.ErrorDomain";
 
 const NSInteger YMYammerSDKLoginAuthenticationError = 1001;
 const NSInteger YMYammerSDKLoginObtainAuthTokenError = 1002;
+const NSInteger YMYammerSDKLoginObtainNetworkTokensError = 1003;
 
 NSString * const YMYammerSDKLoginDidCompleteNotification = @"YMYammerSDKLoginDidCompleteNotification";
 NSString * const YMYammerSDKLoginDidFailNotification = @"YMYammerSDKLoginDidFailNotification";
@@ -46,10 +44,16 @@ NSString * const YMQueryParamError = @"error";
 NSString * const YMQueryParamErrorReason = @"error_reason";
 NSString * const YMQueryParamErrorDescription = @"error_description";
 
-// Note: In this sample app, we assuming single-network access.  If you have to work with mutliple networks you may
-// want to save your authTokens differently (per network)
 NSString * const YMKeychainAuthTokenKey = @"yammerAuthToken";
 NSString * const YMKeychainStateKey = @"yammerState";
+
+@interface YMLoginClient ()
+
+@property (nonatomic, strong) YMAPIClient *client;
+@property (nonatomic, strong) YMAPIClient *tokensClient;
+@property (nonatomic, strong) NSCache *tokenCache;
+
+@end
 
 @implementation YMLoginClient
 
@@ -64,9 +68,20 @@ NSString * const YMKeychainStateKey = @"yammerState";
     return _sharedInstance;
 }
 
-/////////////////////////////////////////////////////////
-// Step 1: Attempt to login using Safari browser
-/////////////////////////////////////////////////////////
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _client = [[YMAPIClient alloc] init];
+        _tokensClient = [[YMAPIClient alloc] init];
+        _tokenCache = [[NSCache alloc] init];
+    }
+    return self;
+}
+
+/**
+ Attempt to login using mobile browser
+ */
 - (void)startLogin
 {
     NSAssert(self.appClientID, @"App client ID cannot be nil");
@@ -74,11 +89,11 @@ NSString * const YMKeychainStateKey = @"yammerState";
     NSAssert(self.authRedirectURI, @"Redirect URI cannot be nil");
     
     NSString *stateParam = [self uniqueIdentifier];
-    [[PDKeychainBindings sharedKeychainBindings] setObject:stateParam forKey:YMKeychainStateKey];
+    [SSKeychain setPassword:stateParam forService:[self serviceName] account:YMKeychainStateKey];
     
-    NSDictionary *params = @{@"client_id": self.appClientID,
-                             @"redirect_uri": self.authRedirectURI,
-                             @"state": stateParam};
+    NSDictionary *params = @{@"client_id"       : self.appClientID,
+                             @"redirect_uri"    : self.authRedirectURI,
+                             @"state"           : stateParam};
 
     NSString *baseUrlString = [NSString stringWithFormat:@"%@/dialog/oauth", YMBaseURL];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:baseUrlString]];
@@ -101,9 +116,9 @@ NSString * const YMKeychainStateKey = @"yammerState";
     return [[NSUUID UUID] UUIDString];
 }
 
-/////////////////////////////////////////////////////////
-// Step 2: See if we got the "code" in the response
-/////////////////////////////////////////////////////////
+/**
+ Handle login redirect sent from mobile browser and check for Oauth code
+ */
 - (BOOL)handleLoginRedirectFromUrl:(NSURL *)url sourceApplication:(NSString *)sourceApplication
 {
     BOOL isValid = NO;
@@ -115,12 +130,12 @@ NSString * const YMKeychainStateKey = @"yammerState";
         NSString *state = params[@"state"];
         NSString *code = params[YMQueryParamCode];
         NSString *error = params[YMQueryParamError];
-        NSString *error_reason = params[YMQueryParamErrorReason];
-        NSString *error_description = params[YMQueryParamErrorDescription];
+        NSString *errorReason = params[YMQueryParamErrorReason];
+        NSString *errorDescription = params[YMQueryParamErrorDescription];
         
-        NSString *storedState = [[PDKeychainBindings sharedKeychainBindings] objectForKey:YMKeychainStateKey];
+        NSString *storedState = [SSKeychain passwordForService:[self serviceName] account:YMKeychainStateKey];
         if ([state isEqualToString:storedState]) {
-            [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:YMKeychainStateKey];
+            [SSKeychain deletePasswordForService:[self serviceName] account:YMKeychainStateKey];
         } else {
             return NO;
         }
@@ -131,14 +146,13 @@ NSString * const YMKeychainStateKey = @"yammerState";
 
         if (error) {
             NSString *errorString = error;
-            if (error_reason) {
-                errorString = [errorString stringByAppendingString:error_reason];
+            if (errorReason) {
+                errorString = [errorString stringByAppendingString:errorReason];
             }
-            if (error_description) {
-                errorString = [errorString stringByAppendingString:error_description];
+            if (errorDescription) {
+                errorString = [errorString stringByAppendingString:errorDescription];
             }
 
-            // DEVELOPER: Put your error display/processing code here...
             NSLog(@"error: %@", errorString);
             
             NSError *error = [NSError errorWithDomain:YMYammerSDKErrorDomain code:YMYammerSDKLoginAuthenticationError userInfo:@{NSLocalizedDescriptionKey: errorString}];
@@ -155,74 +169,155 @@ NSString * const YMKeychainStateKey = @"yammerState";
     return isValid;
 }
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Step 3: Once you have the code, you must continue the login process in order to get the auth token.
-//         This requires another call to the server with the code, clientId, and client secret
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ Get the Oauth token from the server using the code, client ID and client secret
+ */
 - (void)obtainAuthTokenForCode:(NSString *)code
 {
     // Query params
-    NSDictionary *params = @{
-                             @"client_id"       : self.appClientID,
+    NSDictionary *params = @{@"client_id"       : self.appClientID,
                              @"client_secret"   : self.appClientSecret,
-                             @"code"            : code
-                             };
-
-    // Yammer SDK: Note that once we have the authToken, we use a different constructor to create the client:
-    // - (id)initWithAuthToken:(NSString *)authToken.
-    // But we don't have the authToken yet, so we use this:
-    YMAPIClient *client = [[YMAPIClient alloc] init];
+                             @"code"            : code};
 
     __weak typeof(self) weakSelf = self;
-
-    [client postPath:@"/oauth2/access_token.json"
-          parameters:params
-             success:^(id responseObject) {
-                 
-                 NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                 NSDictionary *access_token = jsonDict[@"access_token"];
-                 NSString *authToken = access_token[@"token"];
-                 
-                 // For debugging purposes only
-                 NSLog(@"Yammer Login JSON: %@", responseObject);
-                 NSLog(@"authToken: %@", authToken);
-                 
-                 // Save the authToken in the KeyChain
-                 [weakSelf storeAuthTokenInKeychain:authToken];
-                 
-                 [weakSelf.delegate loginClient:weakSelf didCompleteWithAuthToken:authToken];
-                 [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidCompleteNotification object:weakSelf userInfo:@{YMYammerSDKAuthTokenUserInfoKey: authToken}];
-             }
-             failure:^(NSInteger statusCode, NSError *error) {
-                 NSMutableDictionary *userInfo = [@{NSLocalizedDescriptionKey: @"Unable to retrieve authentication token from code"} mutableCopy];
-                 if (error) {
-                     userInfo[NSUnderlyingErrorKey] = error;
-                     userInfo[NSLocalizedFailureReasonErrorKey] = [error localizedDescription];
-                 }
-                 
-                 NSError *newError = [NSError errorWithDomain:YMYammerSDKErrorDomain code:YMYammerSDKLoginObtainAuthTokenError userInfo:userInfo];
-                 
-                 [weakSelf.delegate loginClient:weakSelf didFailWithError:newError];
-                 [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification object:weakSelf userInfo:@{YMYammerSDKErrorUserInfoKey: newError}];
-             }
+    
+    [self.client postPath:@"/oauth2/access_token.json"
+               parameters:params
+                  success:^(id responseObject) {
+                      NSDictionary *jsonDict = (NSDictionary *) responseObject;
+                      NSDictionary *accessToken = jsonDict[@"access_token"];
+                      NSString *authToken = accessToken[@"token"];
+                      
+                      // For debugging purposes only
+                      NSLog(@"Yammer Login JSON: %@", responseObject);
+                      NSLog(@"authToken: %@", authToken);
+                      
+                      // Save the authToken in the KeyChain
+                      [weakSelf storeAuthTokenInKeychain:authToken withTokenKey:YMKeychainAuthTokenKey];
+                      
+                      // Retrieve all network tokens
+                      [self retrieveAllNetworkTokensWithToken:authToken completion:^(NSError *error) {
+                          if (!error) {
+                              [weakSelf.delegate loginClient:weakSelf didCompleteWithAuthToken:authToken];
+                              [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidCompleteNotification
+                                                                                  object:weakSelf
+                                                                                userInfo:@{YMYammerSDKAuthTokenUserInfoKey: authToken}];
+                          } else {
+                              [self clearAuthTokens];
+                              
+                              [weakSelf.delegate loginClient:weakSelf didFailWithError:error];
+                              [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification
+                                                                                  object:weakSelf
+                                                                                userInfo:@{YMYammerSDKErrorUserInfoKey: error}];
+                          }
+                      }];
+                  }
+                  failure:^(NSInteger statusCode, NSError *error) {
+                      NSMutableDictionary *userInfo = [@{NSLocalizedDescriptionKey: @"Unable to retrieve authentication token from code"} mutableCopy];
+                      
+                      if (error) {
+                          userInfo[NSUnderlyingErrorKey] = error;
+                          userInfo[NSLocalizedFailureReasonErrorKey] = [error localizedDescription];
+                      }
+                      
+                      NSError *newError = [NSError errorWithDomain:YMYammerSDKErrorDomain
+                                                              code:YMYammerSDKLoginObtainAuthTokenError
+                                                          userInfo:userInfo];
+                      
+                      [weakSelf.delegate loginClient:weakSelf didFailWithError:newError];
+                      [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification
+                                                                          object:weakSelf
+                                                                        userInfo:@{YMYammerSDKErrorUserInfoKey: newError}];
+                  }
      ];
 }
 
-- (void)clearAuthToken
+- (void)refreshNetworkTokensWithCompletion:(void (^)(NSError *error))completion
 {
-    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:YMKeychainAuthTokenKey];
+    [self retrieveAllNetworkTokensWithToken:[self storedAuthToken] completion:completion];
 }
 
-- (void)storeAuthTokenInKeychain:(NSString *)authToken
+- (void)retrieveAllNetworkTokensWithToken:(NSString *)authToken completion:(void (^)(NSError *error))completion
 {
-    PDKeychainBindings *bindings=[PDKeychainBindings sharedKeychainBindings];
-    [bindings setObject:authToken forKey:YMKeychainAuthTokenKey];
+    if (authToken) {
+        self.tokensClient.authToken = authToken;
+        
+        [self.tokensClient getPath:@"/api/v1/oauth/tokens.json"
+                        parameters:nil
+                           success:^(id responseObject) {
+                               for (NSDictionary *networks in responseObject) {
+                                   [self storeAuthTokenInKeychain:networks[@"token"] withTokenKey:networks[@"network_permalink"]];
+                               }
+                               completion(nil);
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"An error occurred loading network tokens!");
+                               completion(error);
+                           }
+         ];
+    } else {
+        NSError *error = [[NSError alloc] initWithDomain:YMYammerSDKErrorDomain
+                                                    code:YMYammerSDKLoginObtainNetworkTokensError
+                                                userInfo:@{NSLocalizedDescriptionKey : @"Auth token does not exist."}];
+        completion(error);
+    }
+}
+
+- (void)clearAuthTokens
+{
+    [self.tokenCache removeAllObjects];
+
+    NSArray *accounts = [SSKeychain accountsForService:[self serviceName]];
+    
+    for (NSDictionary *accountDictionary in accounts) {
+        [SSKeychain deletePasswordForService:[self serviceName]
+                                     account:accountDictionary[kSSKeychainAccountKey]];
+    }
+}
+
+- (void)storeAuthTokenInKeychain:(NSString *)authToken withTokenKey:(NSString *)tokenKey
+{
+    if (!authToken || !tokenKey) {
+        return;
+    }
+    
+    [self.tokenCache setObject:authToken forKey:tokenKey];
+    
+    [SSKeychain setPassword:authToken forService:[self serviceName] account:tokenKey];
 }
 
 - (NSString *)storedAuthToken
 {
-    return [[PDKeychainBindings sharedKeychainBindings] objectForKey:YMKeychainAuthTokenKey];
+    return [self retrieveAuthTokenForKey:YMKeychainAuthTokenKey];
+}
+
+- (NSString *)storedAuthTokenForNetworkPermalink:(NSString *)networkPermalink
+{
+    return [self retrieveAuthTokenForKey:networkPermalink];
+}
+
+- (NSString *)retrieveAuthTokenForKey:(NSString *)tokenKey
+{
+    if (!tokenKey) {
+        return nil;
+    }
+    
+    NSString *authToken = [self.tokenCache objectForKey:tokenKey];
+    if (authToken) {
+        return authToken;
+    }
+    
+    authToken = [SSKeychain passwordForService:[self serviceName] account:tokenKey];
+    if (authToken) {
+        [self.tokenCache setObject:authToken forKey:tokenKey];
+    }
+    
+    return authToken;
+}
+
+- (NSString *)serviceName
+{
+    return [[NSBundle mainBundle] bundleIdentifier];
 }
 
 @end
