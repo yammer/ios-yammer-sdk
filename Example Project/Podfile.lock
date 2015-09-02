@@ -33,4 +33,4 @@ SPEC CHECKSUMS:
   PDKeychainBindingsController: fa8cb3cf99f2ea9240d61066ed0549f34e2cec3c
   YammerSDK: a17e2637e614047dd7dd40a62aaae06907a8b0af
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.38.2
