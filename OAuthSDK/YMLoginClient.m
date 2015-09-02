@@ -188,10 +188,6 @@ NSString * const YMKeychainStateKey = @"yammerState";
                       NSDictionary *accessToken = jsonDict[@"access_token"];
                       NSString *authToken = accessToken[@"token"];
                       
-                      // For debugging purposes only
-                      NSLog(@"Yammer Login JSON: %@", responseObject);
-                      NSLog(@"authToken: %@", authToken);
-                      
                       // Save the authToken in the KeyChain
                       [weakSelf storeAuthTokenInKeychain:authToken withTokenKey:YMKeychainAuthTokenKey];
                       
