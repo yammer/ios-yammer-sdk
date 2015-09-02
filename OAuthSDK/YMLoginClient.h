@@ -1,3 +1,4 @@
+//
 // YMLoginClient.h
 //
 // Copyright (c) 2015 Microsoft
@@ -60,7 +61,7 @@ FOUNDATION_EXPORT NSString * const YMYammerSDKErrorUserInfoKey;
  */
 - (NSString *)storedAuthTokenForNetworkPermalink:(NSString *)networkPermalink;
 
-- (void)clearAuthToken;
+- (void)clearAuthTokens;
 
 @end
 

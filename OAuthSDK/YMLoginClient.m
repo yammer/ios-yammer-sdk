@@ -1,3 +1,4 @@
+//
 // YMLoginClient.m
 //
 // Copyright (c) 2015 Microsoft
@@ -21,7 +22,7 @@
 // THE SOFTWARE.
 
 #import "YMLoginClient.h"
-#import "PDKeychainBindings.h"
+#import <SSKeychain/SSKeychain.h>
 #import "YMAPIClient.h"
 #import "NSURL+YMQueryParameters.h"
 
@@ -88,7 +89,7 @@ NSString * const YMKeychainStateKey = @"yammerState";
     NSAssert(self.authRedirectURI, @"Redirect URI cannot be nil");
     
     NSString *stateParam = [self uniqueIdentifier];
-    [[PDKeychainBindings sharedKeychainBindings] setObject:stateParam forKey:YMKeychainStateKey];
+    [SSKeychain setPassword:stateParam forService:[self serviceName] account:YMKeychainStateKey];
     
     NSDictionary *params = @{@"client_id"       : self.appClientID,
                              @"redirect_uri"    : self.authRedirectURI,
@@ -132,9 +133,9 @@ NSString * const YMKeychainStateKey = @"yammerState";
         NSString *errorReason = params[YMQueryParamErrorReason];
         NSString *errorDescription = params[YMQueryParamErrorDescription];
         
-        NSString *storedState = [[PDKeychainBindings sharedKeychainBindings] objectForKey:YMKeychainStateKey];
+        NSString *storedState = [SSKeychain passwordForService:[self serviceName] account:YMKeychainStateKey];
         if ([state isEqualToString:storedState]) {
-            [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:YMKeychainStateKey];
+            [SSKeychain deletePasswordForService:[self serviceName] account:YMKeychainStateKey];
         } else {
             return NO;
         }
@@ -202,7 +203,7 @@ NSString * const YMKeychainStateKey = @"yammerState";
                                                                                   object:weakSelf
                                                                                 userInfo:@{YMYammerSDKAuthTokenUserInfoKey: authToken}];
                           } else {
-                              [self clearAuthToken];
+                              [self clearAuthTokens];
                               
                               [weakSelf.delegate loginClient:weakSelf didFailWithError:error];
                               [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification
@@ -262,11 +263,16 @@ NSString * const YMKeychainStateKey = @"yammerState";
     }
 }
 
-- (void)clearAuthToken
+- (void)clearAuthTokens
 {
-    [self.tokenCache removeObjectForKey:YMKeychainAuthTokenKey];
+    [self.tokenCache removeAllObjects];
 
-    [[PDKeychainBindings sharedKeychainBindings] removeObjectForKey:YMKeychainAuthTokenKey];
+    NSArray *accounts = [SSKeychain accountsForService:[self serviceName]];
+    
+    for (NSDictionary *accountDictionary in accounts) {
+        [SSKeychain deletePasswordForService:[self serviceName]
+                                     account:accountDictionary[kSSKeychainAccountKey]];
+    }
 }
 
 - (void)storeAuthTokenInKeychain:(NSString *)authToken withTokenKey:(NSString *)tokenKey
@@ -277,7 +283,7 @@ NSString * const YMKeychainStateKey = @"yammerState";
     
     [self.tokenCache setObject:authToken forKey:tokenKey];
     
-    [[PDKeychainBindings sharedKeychainBindings] setObject:authToken forKey:tokenKey];
+    [SSKeychain setPassword:authToken forService:[self serviceName] account:tokenKey];
 }
 
 - (NSString *)storedAuthToken
@@ -301,10 +307,17 @@ NSString * const YMKeychainStateKey = @"yammerState";
         return authToken;
     }
     
-    authToken = [[PDKeychainBindings sharedKeychainBindings] objectForKey:tokenKey];
-    [self.tokenCache setObject:authToken forKey:tokenKey];
+    authToken = [SSKeychain passwordForService:[self serviceName] account:tokenKey];
+    if (authToken) {
+        [self.tokenCache setObject:authToken forKey:tokenKey];
+    }
     
     return authToken;
+}
+
+- (NSString *)serviceName
+{
+    return [[NSBundle mainBundle] bundleIdentifier];
 }
 
 @end

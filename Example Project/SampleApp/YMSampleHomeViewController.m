@@ -86,7 +86,7 @@
 // settings app, selecting Safari and then Clear Cookies and Data.
 - (IBAction)deleteToken:(id)sender
 {
-    [[YMLoginClient sharedInstance] clearAuthToken];
+    [[YMLoginClient sharedInstance] clearAuthTokens];
     
     [UIView animateWithDuration:0.3f
                      animations:^{
