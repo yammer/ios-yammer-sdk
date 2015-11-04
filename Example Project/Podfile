@@ -2,12 +2,12 @@ platform :ios, '7.0'
 
 target 'SampleApp' do
 
-pod 'YammerSDK', "~> 1.0"
+pod 'YammerSDK', :path => "../"
 
 end
 
 target 'SampleAppTests' do
 
-pod 'YammerSDK', "~> 1.0"
+pod 'YammerSDK', :path => "../"
 
 end

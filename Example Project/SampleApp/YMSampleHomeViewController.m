@@ -37,7 +37,7 @@
 // This is called by clicking the login button in the sample interface.
 - (IBAction)login:(id)sender
 {    
-    [[YMLoginClient sharedInstance] startLogin];
+    [[YMLoginClient sharedInstance] startLoginWithContextViewController:self];
     
     [self resetUI];
 }
@@ -137,7 +137,7 @@
         // is called in this class.  Usually in an application that post-login process will just be an
         // app home page or something similar, so this dynamic delegate is not really necessary, but provides some
         // added flexibility in routing the app to a delegate after login.
-        [[YMLoginClient sharedInstance] startLogin];
+        [[YMLoginClient sharedInstance] startLoginWithContextViewController:self];
     }
 }
 
