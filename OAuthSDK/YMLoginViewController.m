@@ -25,6 +25,7 @@
 #import "YMLoginViewController.h"
 #import "YMLoginClient.h"
 #import "NSURL+YMQueryParameters.h"
+#import "YMLoginViewController+Internal.h"
 
 #pragma mark - Yammer UIColor category
 

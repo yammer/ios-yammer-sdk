@@ -27,6 +27,7 @@
 #import "YMAPIClient.h"
 #import "NSURL+YMQueryParameters.h"
 #import "YMLoginViewController.h"
+#import "YMLoginViewController+Internal.h"
 
 NSString * const YMMobileSafariString = @"com.apple.mobilesafari";
 NSString * const YMYammerSDKErrorDomain = @"com.yammer.YammerSDK.ErrorDomain";

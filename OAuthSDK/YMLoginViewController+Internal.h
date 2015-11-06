@@ -1,5 +1,5 @@
 //
-// YMLoginViewController.h
+// YMLoginViewController+Internal.h
 //
 // Copyright (c) 2015 Microsoft
 //
@@ -22,10 +22,19 @@
 // THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+#import "YMLoginViewController.h"
 
-@interface YMLoginViewController : UIViewController
+@protocol YMLoginViewControllerDelegate;
 
-- (instancetype)initWithRequest:(NSURLRequest *)request;
+@interface YMLoginViewController ()
 
+@property (nonatomic, weak) id<YMLoginViewControllerDelegate> delegate;
+
+@end
+
+@protocol YMLoginViewControllerDelegate <NSObject>
+@optional
+- (void)loginViewController:(YMLoginViewController *)loginViewController didObtainCode:(NSString *)code state:(NSString *)state;
+- (void)loginViewControllerCancelled:(YMLoginViewController *)loginViewController;
+- (void)loginViewController:(YMLoginViewController *)loginViewController didFailWithError:(NSError *)error;
 @end
