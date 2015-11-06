@@ -47,6 +47,10 @@ FOUNDATION_EXPORT const NSInteger YMYammerSDKLoginObtainNetworkTokensError;
 
 + (YMLoginClient *)sharedInstance;
 
+/**
+ Begin the login process from a modally presented view controller
+ @param viewController The view controller to modally present from
+ */
 - (void)startLoginWithContextViewController:(UIViewController *)viewController;
 
 /**
