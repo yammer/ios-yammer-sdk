@@ -30,6 +30,12 @@ FOUNDATION_EXPORT NSString * const YMYammerSDKLoginDidFailNotification;
 FOUNDATION_EXPORT NSString * const YMYammerSDKAuthTokenUserInfoKey;
 FOUNDATION_EXPORT NSString * const YMYammerSDKErrorUserInfoKey;
 
+FOUNDATION_EXPORT NSString * const YMYammerSDKErrorDomain;
+
+FOUNDATION_EXPORT const NSInteger YMYammerSDKLoginAuthenticationError;
+FOUNDATION_EXPORT const NSInteger YMYammerSDKLoginObtainAuthTokenError;
+FOUNDATION_EXPORT const NSInteger YMYammerSDKLoginObtainNetworkTokensError;
+
 @protocol YMLoginClientDelegate;
 
 @interface YMLoginClient : NSObject
@@ -42,9 +48,11 @@ FOUNDATION_EXPORT NSString * const YMYammerSDKErrorUserInfoKey;
 
 + (YMLoginClient *)sharedInstance;
 
-- (void)startLogin;
-
-- (BOOL)handleLoginRedirectFromUrl:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+/**
+ Begin the login process from a modally presented view controller
+ @param viewController The view controller to modally present from
+ */
+- (void)startLoginWithContextViewController:(UIViewController *)viewController;
 
 /**
  Asynchronously load the tokens from all networks using the stored Oauth token

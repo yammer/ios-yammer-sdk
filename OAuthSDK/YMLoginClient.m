@@ -20,11 +20,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
 
 #import "YMLoginClient.h"
 #import <SSKeychain/SSKeychain.h>
 #import "YMAPIClient.h"
 #import "NSURL+YMQueryParameters.h"
+#import "YMLoginViewController.h"
+#import "YMLoginViewController+Internal.h"
 
 NSString * const YMMobileSafariString = @"com.apple.mobilesafari";
 NSString * const YMYammerSDKErrorDomain = @"com.yammer.YammerSDK.ErrorDomain";
@@ -39,15 +42,10 @@ NSString * const YMYammerSDKLoginDidFailNotification = @"YMYammerSDKLoginDidFail
 NSString * const YMYammerSDKAuthTokenUserInfoKey = @"YMYammerSDKAuthTokenUserInfoKey";
 NSString * const YMYammerSDKErrorUserInfoKey  = @"YMYammerSDKErrorUserInfoKey";
 
-NSString * const YMQueryParamCode = @"code";
-NSString * const YMQueryParamError = @"error";
-NSString * const YMQueryParamErrorReason = @"error_reason";
-NSString * const YMQueryParamErrorDescription = @"error_description";
-
 NSString * const YMKeychainAuthTokenKey = @"yammerAuthToken";
 NSString * const YMKeychainStateKey = @"yammerState";
 
-@interface YMLoginClient ()
+@interface YMLoginClient ()<YMLoginViewControllerDelegate>
 
 @property (nonatomic, strong) YMAPIClient *client;
 @property (nonatomic, strong) YMAPIClient *tokensClient;
@@ -82,11 +80,12 @@ NSString * const YMKeychainStateKey = @"yammerState";
 /**
  Attempt to login using mobile browser
  */
-- (void)startLogin
+- (void)startLoginWithContextViewController:(UIViewController *)viewController
 {
     NSAssert(self.appClientID, @"App client ID cannot be nil");
     NSAssert(self.appClientSecret, @"App client secret cannot be nil");
     NSAssert(self.authRedirectURI, @"Redirect URI cannot be nil");
+    NSAssert(viewController, @"Context view controller cannot be nil");
     
     NSString *stateParam = [self uniqueIdentifier];
     [SSKeychain setPassword:stateParam forService:[self serviceName] account:YMKeychainStateKey];
@@ -105,68 +104,20 @@ NSString * const YMKeychainStateKey = @"yammerState";
     if (error) {
         NSLog(@"Failed to serialize request: %@", error);
     }
-
-    // Yammer SDK: This will launch mobile (iOS) Safari and begin the two-step login process.
-    // The app delegate will intercept the callback from the login page.  See app delegate for method call.
-    [[UIApplication sharedApplication] openURL:serializedRequest.URL];
+    
+    if (viewController) {
+        YMLoginViewController *loginViewController = [[YMLoginViewController alloc] initWithRequest:serializedRequest];
+        loginViewController.delegate = self;
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+        
+        [viewController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 - (NSString *)uniqueIdentifier
 {
     return [[NSUUID UUID] UUIDString];
-}
-
-/**
- Handle login redirect sent from mobile browser and check for Oauth code
- */
-- (BOOL)handleLoginRedirectFromUrl:(NSURL *)url sourceApplication:(NSString *)sourceApplication
-{
-    BOOL isValid = NO;
-
-    // Make sure redirect is coming from mobile safari and URL has correct prefix
-    if ([sourceApplication isEqualToString:YMMobileSafariString] && [url.absoluteString hasPrefix:self.authRedirectURI]) {
-        NSDictionary *params = [url ym_queryParameters];
-
-        NSString *state = params[@"state"];
-        NSString *code = params[YMQueryParamCode];
-        NSString *error = params[YMQueryParamError];
-        NSString *errorReason = params[YMQueryParamErrorReason];
-        NSString *errorDescription = params[YMQueryParamErrorDescription];
-        
-        NSString *storedState = [SSKeychain passwordForService:[self serviceName] account:YMKeychainStateKey];
-        if ([state isEqualToString:storedState]) {
-            [SSKeychain deletePasswordForService:[self serviceName] account:YMKeychainStateKey];
-        } else {
-            return NO;
-        }
-
-        if (code || error) {
-            isValid = YES;
-        }
-
-        if (error) {
-            NSString *errorString = error;
-            if (errorReason) {
-                errorString = [errorString stringByAppendingString:errorReason];
-            }
-            if (errorDescription) {
-                errorString = [errorString stringByAppendingString:errorDescription];
-            }
-
-            NSLog(@"error: %@", errorString);
-            
-            NSError *error = [NSError errorWithDomain:YMYammerSDKErrorDomain code:YMYammerSDKLoginAuthenticationError userInfo:@{NSLocalizedDescriptionKey: errorString}];
-            
-            [self.delegate loginClient:self didFailWithError:error];
-            [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification object:self userInfo:@{YMYammerSDKErrorUserInfoKey: error}];
-        } else if (code) {
-            NSLog(@"Credentials accepted, code received, on to part 2 of login process.");
-
-            [self obtainAuthTokenForCode:code];
-        }
-    }
-
-    return isValid;
 }
 
 /**
@@ -314,6 +265,27 @@ NSString * const YMKeychainStateKey = @"yammerState";
 - (NSString *)serviceName
 {
     return [[NSBundle mainBundle] bundleIdentifier];
+}
+
+#pragma mark - Login view controller delegate
+
+- (void)loginViewController:(YMLoginViewController *)loginViewController didObtainCode:(NSString *)code state:(NSString *)state
+{
+    [loginViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    NSString *storedState = [SSKeychain passwordForService:[self serviceName] account:YMKeychainStateKey];
+    if ([state isEqualToString:storedState]) {
+        [SSKeychain deletePasswordForService:[self serviceName] account:YMKeychainStateKey];
+        
+        [self obtainAuthTokenForCode:code];
+    }
+}
+
+- (void)loginViewController:(YMLoginViewController *)loginViewController didFailWithError:(NSError *)error
+{
+    [self.delegate loginClient:self didFailWithError:error];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:YMYammerSDKLoginDidFailNotification object:self userInfo:@{YMYammerSDKErrorUserInfoKey: error}];
 }
 
 @end
