@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name    = 'YammerSDK'
-  s.version = 2.0.0'
+  s.version = '2.0.0'
   s.summary = 'YammerSDK'
   s.author = { 'Yammer' => 'ios@yammer-inc.com' }
   s.homepage = 'https://github.com/yammer/ios-yammer-sdk'
